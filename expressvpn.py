@@ -27,31 +27,25 @@ def disconnect():
 def print_servers(server_dict):
     print('--------------------------')
     for country in server_dict['countries']:
-        print("Country = " + country)
+        print(country)
         for location in server_dict[country]:
             print(location)
 
-
-def parse_ls_output(output):
-    """returns a dictionary containing a list of countries and a list of locations
-        ["countries"] for a list of countries """
+def get_countries_locations(output):
     location_list = []
-    server_dict = {}
     country = None
-    server_dict['countries'] = []
-    output = output.split('\n')
+    output = output.split('\n')             # Remove new line
     output = output[2:]                     # Remove decoration
+
     for server in output:
-        server = server.split('\t')
+        server = server.split('\t')         
         server = filter(None, server)       # Remove blank items
         # Check for new country
         if len(server) == 4 or len(server) == 3 and server[2] != "Y":
             # New country
             if country is not None:
-                # Add the current country to the server list
-                server_dict['countries'].append(country)
-                # Add the list of server locations to the country key
-                server_dict[country] = location_list
+                # return the country and its list of locations
+                yield country, location_list
                 # Start a new list
                 location_list = []
                 # Add the location to the list
@@ -65,6 +59,16 @@ def parse_ls_output(output):
                 country = server[1]
         else:
             location_list.append(server[1:])      # Add location
+
+def parse_ls_output(output):
+    """returns a dictionary containing a list of countries and a list of locations
+        ["countries"] for a list of countries """
+    server_dict = {}
+    server_dict['countries'] = []
+
+    for country, location_list in get_countries_locations(output):
+        server_dict['countries'].append(country)
+        server_dict[country] = location_list
 
     return server_dict
 
