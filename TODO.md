@@ -4,5 +4,8 @@
   * Make ui not ugly
 2. Error handling
 3. Add all commands of expressvpn
+  * Refresh
+  * Change protocol
+  * Preferences
 4. Clear comboboxs when country changed
-5. reconnect when new country is selected and connect is clicked
+5. Reconnect when new country is selected and connect is clicked
