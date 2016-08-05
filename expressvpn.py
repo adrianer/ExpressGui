@@ -10,8 +10,11 @@ def status():
         return True
 
 
-def connect():
-    stream = subprocess.call(["expressvpn", "connect"])
+def connect(location=None):
+    if location != None:
+        stream = subprocess.call(["expressvpn", "connect", location])
+    else:
+        stream = subprocess.call(["expressvpn", "connect"])
     if stream == 0 or 1:
         # Connected
         return True
