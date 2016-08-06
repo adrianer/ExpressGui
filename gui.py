@@ -10,6 +10,7 @@ import expressvpn
 
 class ExpressGui:
     connected = False
+    server_list = {}
 
     def __init__(self):
         self.connected = expressvpn.connect()
@@ -31,16 +32,25 @@ class ExpressGui:
         self.button = gtk.Button("connect")
         self.button.connect("clicked", self.connect, None)
         self.countries_combobox.connect("changed", self.country_change)
+
+        self.refresh_button = gtk.Button("Refresh")
+        self.refresh_button.connect("clicked", self.refresh, None)
+
+
         self.disconnect_button = gtk.Button("disconnect")
         self.disconnect_button.connect("clicked", self.disconnect, None)
+
 
         self.box.pack_start(self.button, False, False, 0)
         self.box.pack_start(self.disconnect_button, False, False, 0)
         self.box.pack_start(self.status_label, False, False, 0)
         self.box.pack_start(self.countries_combobox, False, False, 0)
         self.box.pack_start(self.locations_combobox, False, False, 0)
+        self.box.pack_start(self.refresh_button, False, False, 0)
+
 
         self.window.add(self.box)
+        self.refresh_button.show()
         self.button.show()
         self.countries_combobox.show()
         self.locations_combobox.show()
@@ -48,6 +58,8 @@ class ExpressGui:
         self.status_label.show()
         self.box.show()
         self.window.show()
+
+
 
     def country_change(self, widget):
         self.update_location_box()
@@ -65,6 +77,12 @@ class ExpressGui:
         for location in self.server_list[country]:
             self.locations_combobox.append_text(location[0])
         self.locations_combobox.set_active(0)
+
+    def update_servers(self):
+        self.get_servers()
+        self.update_country_box()
+        self.update_location_box()
+
 
     def get_servers(self):
         self.server_list = expressvpn.ls()
@@ -87,6 +105,11 @@ class ExpressGui:
         else:
             self.connected = True
         self.update_status()
+
+    def refresh(self, widget, data=None):
+        expressvpn.refresh()
+        self.get_servers()
+        self.update_servers()
 
     def delete_event(self, widget, event, data=None):
         print("Exiting")

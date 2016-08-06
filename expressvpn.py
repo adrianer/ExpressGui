@@ -81,6 +81,11 @@ def ls():
     location_list = parse_ls_output(output)
     return location_list
 
+def refresh():
+    output = subprocess.call(["expressvpn", "refresh"])
+    if output == 0:
+        return True
+
 
 if __name__ == "__main__":
     # Example of usage
