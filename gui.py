@@ -60,6 +60,7 @@ class ExpressGui:
 
 
     def update_location_box(self):
+        self.locations_combobox.get_model().clear()
         country = self.countries_combobox.get_active_text()
         for location in self.server_list[country]:
             self.locations_combobox.append_text(location[0])

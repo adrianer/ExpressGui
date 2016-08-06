@@ -7,5 +7,4 @@
   * Refresh
   * Change protocol
   * Preferences
-4. Clear comboboxs when country changed
-5. Reconnect when new country is selected and connect is clicked
+4. Reconnect when new country is selected and connect is clicked
