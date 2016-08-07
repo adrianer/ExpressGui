@@ -28,12 +28,10 @@ class ExpressGui:
         self.update_country_box()
         self.update_location_box()
 
-        self.status_label = Gtk.Label()
-        self.update_status()
         self.box = Gtk.VBox(False, 0)
-       # self.button = Gtk.Button("connect")
         self.button = Gtk.Switch()
-        #self.button.connect("clicked", self.connect, None)
+        self.update_status()
+
         self.button.connect("notify::active", self.connect, None)
         self.countries_combobox.connect("changed", self.country_change)
 
@@ -42,7 +40,6 @@ class ExpressGui:
 
 
         self.box.pack_start(self.button, False, False, 0)
-        self.box.pack_start(self.status_label, False, False, 0)
         self.box.pack_start(self.countries_combobox, False, False, 0)
         self.box.pack_start(self.locations_combobox, False, False, 0)
         self.box.pack_start(self.refresh_button, False, False, 0)
@@ -53,7 +50,6 @@ class ExpressGui:
         self.button.show()
         self.countries_combobox.show()
         self.locations_combobox.show()
-        self.status_label.show()
         self.box.show()
         self.window.show()
 
@@ -87,28 +83,27 @@ class ExpressGui:
 
     def update_status(self):
         status = expressvpn.status()
-        if status == 2:
+        if status != None:
             self.current_server = status
             self.connected = True
         else:
             self.connected = False
-        self.update_status_label()
+        self.update_switch()
 
-    def update_status_label(self):
+    def update_switch(self):
         if self.connected == False:
-            self.status_label.set_text("Not connected")
+            self.button.set_state(False)
         else:
-            self.status_label.set_text("Connected")
+            self.button.set_state(True)
     
-    def connect(self, switch, gparam,location=None):
+    def connect(self, switch, gparam, location=None):
         location = self.locations_combobox.get_active_text()
-        if location != self.current_server:
-            expressvpn.disconnect()
-            expressvpn.connect(location)
-            self.update_status()
+        if switch.get_active():
+            if location != self.current_server:
+                expressvpn.disconnect()
+                expressvpn.connect(location)
         else:
             expressvpn.disconnect()
-            self.update_status()
 
     def disconnect(self, widget, data=None):
         if expressvpn.disconnect() == True:

@@ -5,7 +5,7 @@ import subprocess
 def status():
     stream = subprocess.check_output(["expressvpn", "status"]).decode('utf-8')
     if "Not connected" in stream:
-        return 2
+        return None
     else:
         stream = stream.split(None, 2)
         stream = stream[2].strip('\n')
