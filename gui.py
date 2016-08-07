@@ -1,7 +1,7 @@
 """the gui of ExpressvpnGui"""
-import pygtk
-pygtk.require('2.0')
-import gtk
+import gi
+gi.require_version('Gtk','3.0')
+from gi.repository import Gtk
 import os
 import subprocess
 import sys, string
@@ -14,26 +14,30 @@ class ExpressGui:
     current_server = ""
 
     def __init__(self):
-        self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+        self.window = Gtk.Window()
         self.window.connect("delete_event", self.delete_event)
         self.window.connect("destroy", self.destroy)
         self.window.set_border_width(10)
 
-        self.countries_combobox = gtk.combo_box_new_text()
-        self.locations_combobox = gtk.combo_box_new_text()
+        self.countries_combobox = Gtk.ComboBoxText()
+        self.locations_combobox = Gtk.ComboBoxText()
+
+        self.statusbar = Gtk.Statusbar()
 
         self.get_servers()
         self.update_country_box()
         self.update_location_box()
 
-        self.status_label = gtk.Label()
+        self.status_label = Gtk.Label()
         self.update_status()
-        self.box = gtk.HBox(False, 0)
-        self.button = gtk.Button("connect")
-        self.button.connect("clicked", self.connect, None)
+        self.box = Gtk.VBox(False, 0)
+       # self.button = Gtk.Button("connect")
+        self.button = Gtk.Switch()
+        #self.button.connect("clicked", self.connect, None)
+        self.button.connect("notify::active", self.connect, None)
         self.countries_combobox.connect("changed", self.country_change)
 
-        self.refresh_button = gtk.Button("Refresh")
+        self.refresh_button = Gtk.Button("Refresh")
         self.refresh_button.connect("clicked", self.refresh, None)
 
 
@@ -96,7 +100,7 @@ class ExpressGui:
         else:
             self.status_label.set_text("Connected")
     
-    def connect(self, widget, data=None):
+    def connect(self, switch, gparam,location=None):
         location = self.locations_combobox.get_active_text()
         if location != self.current_server:
             expressvpn.disconnect()
@@ -123,10 +127,10 @@ class ExpressGui:
         return False
 
     def destroy(self, widget, data=None):
-        gtk.main_quit()
+        Gtk.main_quit()
 
     def main(self):
-        gtk.main()
+        Gtk.main()
 
 if __name__ == "__main__":
     express = ExpressGui()

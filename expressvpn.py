@@ -3,9 +3,9 @@ import subprocess
 
 
 def status():
-    stream = subprocess.check_output(["expressvpn", "status"])
+    stream = subprocess.check_output(["expressvpn", "status"]).decode('utf-8')
     if "Not connected" in stream:
-        return None
+        return 2
     else:
         stream = stream.split(None, 2)
         stream = stream[2].strip('\n')
@@ -43,7 +43,7 @@ def get_countries_locations(output):
 
     for server in output:
         server = server.split('\t')         
-        server = filter(None, server)       # Remove blank items
+        server = list(filter(None, server))       # Remove blank items
         # Check for new country
         if len(server) == 4 or len(server) == 3 and server[2] != "Y":
             # New country
@@ -78,7 +78,7 @@ def parse_ls_output(output):
 
 
 def ls():
-    output = subprocess.check_output(["expressvpn", "ls"])
+    output = subprocess.check_output(["expressvpn", "ls"]).decode('utf-8')
     location_list = parse_ls_output(output)
     return location_list
 
