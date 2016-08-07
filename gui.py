@@ -11,9 +11,9 @@ import expressvpn
 class ExpressGui:
     connected = False
     server_list = {}
+    current_server = ""
 
     def __init__(self):
-        self.connected = expressvpn.connect()
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         self.window.connect("delete_event", self.delete_event)
         self.window.connect("destroy", self.destroy)
@@ -37,12 +37,7 @@ class ExpressGui:
         self.refresh_button.connect("clicked", self.refresh, None)
 
 
-        self.disconnect_button = gtk.Button("disconnect")
-        self.disconnect_button.connect("clicked", self.disconnect, None)
-
-
         self.box.pack_start(self.button, False, False, 0)
-        self.box.pack_start(self.disconnect_button, False, False, 0)
         self.box.pack_start(self.status_label, False, False, 0)
         self.box.pack_start(self.countries_combobox, False, False, 0)
         self.box.pack_start(self.locations_combobox, False, False, 0)
@@ -54,7 +49,6 @@ class ExpressGui:
         self.button.show()
         self.countries_combobox.show()
         self.locations_combobox.show()
-        self.disconnect_button.show()
         self.status_label.show()
         self.box.show()
         self.window.show()
@@ -87,8 +81,16 @@ class ExpressGui:
     def get_servers(self):
         self.server_list = expressvpn.ls()
 
-
     def update_status(self):
+        status = expressvpn.status()
+        if status == 2:
+            self.current_server = status
+            self.connected = True
+        else:
+            self.connected = False
+        self.update_status_label()
+
+    def update_status_label(self):
         if self.connected == False:
             self.status_label.set_text("Not connected")
         else:
@@ -96,8 +98,13 @@ class ExpressGui:
     
     def connect(self, widget, data=None):
         location = self.locations_combobox.get_active_text()
-        self.connected = expressvpn.connect(location)
-        self.update_status()
+        if location != self.current_server:
+            expressvpn.disconnect()
+            expressvpn.connect(location)
+            self.update_status()
+        else:
+            expressvpn.disconnect()
+            self.update_status()
 
     def disconnect(self, widget, data=None):
         if expressvpn.disconnect() == True:

@@ -5,9 +5,11 @@ import subprocess
 def status():
     stream = subprocess.check_output(["expressvpn", "status"])
     if "Not connected" in stream:
-        return False
+        return None
     else:
-        return True
+        stream = stream.split(None, 2)
+        stream = stream[2].strip('\n')
+        return stream
 
 
 def connect(location=None):
@@ -25,7 +27,6 @@ def disconnect():
     if stream == 0 or 1:
         # Disconnected
         return True
-
 
 def print_servers(server_dict):
     print('--------------------------')
