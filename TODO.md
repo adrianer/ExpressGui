@@ -6,3 +6,4 @@
   * Change protocol
   * Preferences
 4. Reconnect when new country is selected and connect is clicked
+5. Add support for menubar?
