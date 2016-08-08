@@ -8,64 +8,68 @@ import sys, string
 import expressvpn
 
 
+
+
 class ExpressGui:
     connected = False
     server_list = {}
     current_server = ""
 
     def __init__(self):
+        # Create containers
         self.window = Gtk.Window()
+        self.window.set_border_width(10)
+        self.box = Gtk.VBox(False, 0)
         self.window.connect("delete_event", self.delete_event)
         self.window.connect("destroy", self.destroy)
-        self.window.set_border_width(10)
-
+        # Create comboboxs
         self.countries_combobox = Gtk.ComboBoxText()
         self.locations_combobox = Gtk.ComboBoxText()
 
         self.statusbar = Gtk.Statusbar()
-
-        self.get_servers()
-        self.update_country_box()
-        self.update_location_box()
-
-        self.box = Gtk.VBox(False, 0)
-        self.button = Gtk.Switch()
-        self.update_status()
-
-        self.button.connect("notify::active", self.connect, None)
+        
+        # Create the buttons
+        self.switch = Gtk.Switch()
+        self.refresh_switch = Gtk.switch("Refresh")
+        # Connect the signals
+        self.switch.connect("notify::active", self.connect, None)
+        self.refresh_switch.connect("clicked", self.refresh, None)
         self.countries_combobox.connect("changed", self.country_change)
-
-        self.refresh_button = Gtk.Button("Refresh")
-        self.refresh_button.connect("clicked", self.refresh, None)
-
-
-        self.box.pack_start(self.button, False, False, 0)
+        # Pack the widgets
+        self.box.pack_start(self.switch, False, False, 0)
         self.box.pack_start(self.countries_combobox, False, False, 0)
         self.box.pack_start(self.locations_combobox, False, False, 0)
-        self.box.pack_start(self.refresh_button, False, False, 0)
-
-
+        self.box.pack_start(self.refresh_switch, False, False, 0)
+        # Add them to the window
         self.window.add(self.box)
-        self.refresh_button.show()
-        self.button.show()
+        # Show the widgets
+        self.refresh_switch.show()
+        self.switch.show()
         self.countries_combobox.show()
         self.locations_combobox.show()
         self.box.show()
         self.window.show()
+        # Get vpn servers and update status
+        self.update_servers()
+        self.update_status()
+
 
 
 
     def country_change(self, widget):
+        """Updates the location combobox when country is changed"""
         self.update_location_box()
 
 
     def update_country_box(self):
+        """Updates the combobox containging the server countries"""
         for country in self.server_list['countries']:
             self.countries_combobox.append_text(country)
         self.countries_combobox.set_active(0)
 
 
     def update_location_box(self):
+        """updates the combobox containing the server locations"""
         self.locations_combobox.get_model().clear()
         country = self.countries_combobox.get_active_text()
         for location in self.server_list[country]:
@@ -73,15 +77,18 @@ class ExpressGui:
         self.locations_combobox.set_active(0)
 
     def update_servers(self):
+        """Gets the servers from expressvpn then updates the comboboxs"""
         self.get_servers()
         self.update_country_box()
         self.update_location_box()
 
 
     def get_servers(self):
+        """gets a list of servers from expressvpn"""
         self.server_list = expressvpn.ls()
 
     def update_status(self):
+        """Gets expressvpns connection status"""
         status = expressvpn.status()
         if status != None:
             self.current_server = status
@@ -92,9 +99,9 @@ class ExpressGui:
 
     def update_switch(self):
         if self.connected == False:
-            self.button.set_state(False)
+            self.switch.set_state(False)
         else:
-            self.button.set_state(True)
+            self.switch.set_state(True)
     
     def connect(self, switch, gparam, location=None):
         location = self.locations_combobox.get_active_text()
@@ -115,7 +122,7 @@ class ExpressGui:
     def refresh(self, widget, data=None):
         expressvpn.refresh()
         self.get_servers()
-        self.update_servers()
+        self.get_servers()
 
     def delete_event(self, widget, event, data=None):
         print("Exiting")
