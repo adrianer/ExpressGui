@@ -1,13 +1,12 @@
 """the gui of ExpressvpnGui"""
-import gi
-gi.require_version('Gtk','3.0')
-from gi.repository import Gtk
 import os
 import subprocess
-import sys, string
+import sys
+import string
 import expressvpn
-
-
+from gi.repository import Gtk
+import gi
+gi.require_version('Gtk', '3.0')
 
 
 class ExpressGui:
@@ -25,9 +24,7 @@ class ExpressGui:
         # Create comboboxs
         self.countries_combobox = Gtk.ComboBoxText()
         self.locations_combobox = Gtk.ComboBoxText()
-
         self.statusbar = Gtk.Statusbar()
-        
         # Create the buttons
         self.switch = Gtk.Switch()
         self.refresh_switch = Gtk.switch("Refresh")
@@ -53,20 +50,15 @@ class ExpressGui:
         self.update_servers()
         self.update_status()
 
-
-
-
     def country_change(self, widget):
         """Updates the location combobox when country is changed"""
         self.update_location_box()
-
 
     def update_country_box(self):
         """Updates the combobox containging the server countries"""
         for country in self.server_list['countries']:
             self.countries_combobox.append_text(country)
         self.countries_combobox.set_active(0)
-
 
     def update_location_box(self):
         """updates the combobox containing the server locations"""
@@ -82,7 +74,6 @@ class ExpressGui:
         self.update_country_box()
         self.update_location_box()
 
-
     def get_servers(self):
         """gets a list of servers from expressvpn"""
         self.server_list = expressvpn.ls()
@@ -90,7 +81,7 @@ class ExpressGui:
     def update_status(self):
         """Gets expressvpns connection status"""
         status = expressvpn.status()
-        if status != None:
+        if status is None:
             self.current_server = status
             self.connected = True
         else:
@@ -98,11 +89,11 @@ class ExpressGui:
         self.update_switch()
 
     def update_switch(self):
-        if self.connected == False:
+        if self.connected is False:
             self.switch.set_state(False)
         else:
             self.switch.set_state(True)
-    
+
     def connect(self, switch, gparam, location=None):
         location = self.locations_combobox.get_active_text()
         if switch.get_active():
@@ -113,7 +104,7 @@ class ExpressGui:
             expressvpn.disconnect()
 
     def disconnect(self, widget, data=None):
-        if expressvpn.disconnect() == True:
+        if expressvpn.disconnect() is True:
             self.connected = False
         else:
             self.connected = True
@@ -137,5 +128,3 @@ class ExpressGui:
 if __name__ == "__main__":
     express = ExpressGui()
     express.main()
-
-
