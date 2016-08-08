@@ -3,8 +3,10 @@ import subprocess
 
 
 def status():
-    """Returns the status of expressvpn, None if disconnected or the location if connected"""
-    # Execute expressvpn status and get the output 
+    """Returns the status of expressvpn, None if disconnected or the location if
+    connected
+    """
+    # Execute expressvpn status and get the output
     stream = subprocess.check_output(["expressvpn", "status"]).decode('utf-8')
     if "Not connected" in stream:
         return None
@@ -18,7 +20,7 @@ def status():
 
 def connect(location=None):
     """Connects to the vpn"""
-    if location != None:
+    if location is None:
         stream = subprocess.call(["expressvpn", "connect", location])
     else:
         stream = subprocess.call(["expressvpn", "connect"])
@@ -34,12 +36,14 @@ def disconnect():
         # Disconnected
         return True
 
+
 def print_servers(server_dict):
     print('--------------------------')
     for country in server_dict['countries']:
         print(country)
         for location in server_dict[country]:
             print(location)
+
 
 def get_countries_locations(output):
     """Returns the country and a list of locations of that country"""
@@ -49,7 +53,7 @@ def get_countries_locations(output):
     output = output[2:]                     # Remove decoration
 
     for server in output:
-        server = server.split('\t')         
+        server = server.split('\t')
         server = list(filter(None, server))       # Remove blank items
         # Check for new country
         if len(server) == 4 or len(server) == 3 and server[2] != "Y":
@@ -71,6 +75,7 @@ def get_countries_locations(output):
         else:
             location_list.append(server[1:])      # Add location
 
+
 def parse_ls_output(output):
     """Returns a dictionary containing a list of countries and a list of locations
         ["countries"] for a list of countries """
@@ -91,6 +96,7 @@ def ls():
     output = subprocess.check_output(["expressvpn", "ls"]).decode('utf-8')
     location_list = parse_ls_output(output)
     return location_list
+
 
 def refresh():
     """Refreshes the list of locations"""
