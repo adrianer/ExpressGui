@@ -3,16 +3,21 @@ import subprocess
 
 
 def status():
+    """Returns the status of expressvpn, None if disconnected or the location if connected"""
+    # Execute expressvpn status and get the output 
     stream = subprocess.check_output(["expressvpn", "status"]).decode('utf-8')
     if "Not connected" in stream:
         return None
     else:
+        # Remove country
         stream = stream.split(None, 2)
+        # Remove trailing newline
         stream = stream[2].strip('\n')
         return stream
 
 
 def connect(location=None):
+    """Connects to the vpn"""
     if location != None:
         stream = subprocess.call(["expressvpn", "connect", location])
     else:
@@ -23,6 +28,7 @@ def connect(location=None):
 
 
 def disconnect():
+    """Disconnects from vpn"""
     stream = subprocess.call(["expressvpn", "disconnect"])
     if stream == 0 or 1:
         # Disconnected
@@ -36,6 +42,7 @@ def print_servers(server_dict):
             print(location)
 
 def get_countries_locations(output):
+    """Returns the country and a list of locations of that country"""
     location_list = []
     country = None
     output = output.split('\n')             # Remove new line
@@ -65,24 +72,28 @@ def get_countries_locations(output):
             location_list.append(server[1:])      # Add location
 
 def parse_ls_output(output):
-    """returns a dictionary containing a list of countries and a list of locations
+    """Returns a dictionary containing a list of countries and a list of locations
         ["countries"] for a list of countries """
     server_dict = {}
     server_dict['countries'] = []
 
     for country, location_list in get_countries_locations(output):
+        # Add the country to country dictionary key
         server_dict['countries'].append(country)
+        # Add the list of locations to the couontry key
         server_dict[country] = location_list
 
     return server_dict
 
 
 def ls():
+    """Returns a list of locations"""
     output = subprocess.check_output(["expressvpn", "ls"]).decode('utf-8')
     location_list = parse_ls_output(output)
     return location_list
 
 def refresh():
+    """Refreshes the list of locations"""
     output = subprocess.call(["expressvpn", "refresh"])
     if output == 0:
         return True

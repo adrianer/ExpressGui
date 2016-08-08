@@ -61,7 +61,7 @@ class ExpressGui:
         self.countries_combobox.set_active(0)
 
     def update_location_box(self):
-        """updates the combobox containing the server locations"""
+        """Updates the combobox containing the server locations"""
         self.locations_combobox.get_model().clear()
         country = self.countries_combobox.get_active_text()
         for location in self.server_list[country]:
@@ -75,11 +75,11 @@ class ExpressGui:
         self.update_location_box()
 
     def get_servers(self):
-        """gets a list of servers from expressvpn"""
+        """Gets a list of servers from expressvpn"""
         self.server_list = expressvpn.ls()
 
     def update_status(self):
-        """Gets expressvpns connection status"""
+        """Gets expressvpn connection status"""
         status = expressvpn.status()
         if status is None:
             self.current_server = status
@@ -89,18 +89,24 @@ class ExpressGui:
         self.update_switch()
 
     def update_switch(self):
+        """Updates the state of the switch"""
         if self.connected is False:
             self.switch.set_state(False)
         else:
             self.switch.set_state(True)
 
     def connect(self, switch, gparam, location=None):
+        """ Callback function for the active signal of the switch
+            Connects if active disconnects if inactive
+        """
         location = self.locations_combobox.get_active_text()
         if switch.get_active():
+            # switch active so connect if not already connected
             if location != self.current_server:
                 expressvpn.disconnect()
                 expressvpn.connect(location)
         else:
+            # switch set to inactive so disconnect
             expressvpn.disconnect()
 
     def disconnect(self, widget, data=None):
@@ -111,6 +117,7 @@ class ExpressGui:
         self.update_status()
 
     def refresh(self, widget, data=None):
+        """Refreshes the list of servers"""
         expressvpn.refresh()
         self.get_servers()
         self.get_servers()
