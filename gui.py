@@ -119,8 +119,7 @@ class ExpressGui:
     def refresh(self, widget, data=None):
         """Refreshes the list of servers"""
         expressvpn.refresh()
-        self.get_servers()
-        self.get_servers()
+        self.update_servers()
 
     def delete_event(self, widget, event, data=None):
         print("Exiting")
