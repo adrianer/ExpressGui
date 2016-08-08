@@ -4,9 +4,11 @@ import subprocess
 import sys
 import string
 import expressvpn
-from gi.repository import Gtk
 import gi
 gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+
+
 
 
 class ExpressGui:
@@ -27,20 +29,20 @@ class ExpressGui:
         self.statusbar = Gtk.Statusbar()
         # Create the buttons
         self.switch = Gtk.Switch()
-        self.refresh_switch = Gtk.switch("Refresh")
+        self.refresh_button = Gtk.Button("Refresh")
         # Connect the signals
         self.switch.connect("notify::active", self.connect, None)
-        self.refresh_switch.connect("clicked", self.refresh, None)
+        self.refresh_button.connect("clicked", self.refresh, None)
         self.countries_combobox.connect("changed", self.country_change)
         # Pack the widgets
         self.box.pack_start(self.switch, False, False, 0)
         self.box.pack_start(self.countries_combobox, False, False, 0)
         self.box.pack_start(self.locations_combobox, False, False, 0)
-        self.box.pack_start(self.refresh_switch, False, False, 0)
+        self.box.pack_start(self.refresh_button, False, False, 0)
         # Add them to the window
         self.window.add(self.box)
         # Show the widgets
-        self.refresh_switch.show()
+        self.refresh_button.show()
         self.switch.show()
         self.countries_combobox.show()
         self.locations_combobox.show()
