@@ -30,6 +30,9 @@ class Expressvpn:
     def autoconnect(self):
         subprocess.call("expressvpn", "autoconnect")
 
+    def protocol(self, protocol=None)
+        subprocess.call(["expressvpn", "protocol", protocol])
+
     def status(self):
         """Returns the status of expressvpn, None if disconnected or the location if
         connected
@@ -57,7 +60,6 @@ class Expressvpn:
         # Connected
             self.connection_status = True
 
-
     def disconnect(self):
         """Disconnects from vpn"""
         stream = subprocess.call(["expressvpn", "disconnect"])
@@ -82,7 +84,7 @@ class Expressvpn:
         for server in output:
             server = server.split('\t')
             server = list(filter(None, server))       # Remove blank items
-        # Check for new country
+            # Check for new country
             if len(server) == 4 or len(server) == 3 and server[2] != "Y":
                 # New country
                 if country is not None:
