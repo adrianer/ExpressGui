@@ -114,13 +114,6 @@ class ExpressGui:
 
         self.update()
 
-
-    def disconnect(self, widget, data=None):
-        if self.express.disconnect() is True:
-            self.connection_status = False
-        else:
-            self.connection_status = True
-
     def delete_event(self, widget, event, data=None):
         print("Exiting")
         return False
