@@ -27,7 +27,8 @@ class Expressvpn:
             self.send_diagnostics = True
         print(stream)
 
-
+    def autoconnect(self):
+        subprocess.call("expressvpn", "autoconnect")
 
     def status(self):
         """Returns the status of expressvpn, None if disconnected or the location if
