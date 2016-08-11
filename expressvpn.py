@@ -110,7 +110,7 @@ class Expressvpn:
 
 
 if __name__ == "__main__":
-# Example of usage
+    # Example of usage
     if status() is False:
         connect()
         server_dict = ls()

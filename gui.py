@@ -34,7 +34,7 @@ class ExpressGui:
         self.location_label = Gtk.Label()
         # Connect the signals
         self.switch.connect("notify::active", self.switch_toggle, None)
-        self.location_chooser_button.connect("clicked",self.locations_dialog)
+        self.location_chooser_button.connect("clicked",self.dialog_location_select)
         # Pack the widgets
         self.box.pack_start(self.switch, False, False, 0)
         self.box.pack_start(self.location_label, False, False, 0)
@@ -43,6 +43,7 @@ class ExpressGui:
         self.window.add(self.box)
 
     def create_dialog(self):
+        """Creates the location dialog"""
         # Dialog
         self.dialog = Gtk.Window()
         # The container
@@ -56,7 +57,7 @@ class ExpressGui:
         self.connect_button = Gtk.Button("Change Server")
         # Connect signals
         self.countries_combobox.connect("changed", self.country_change)
-        self.connect_button.connect("clicked", self.dialog_connect) 
+        self.connect_button.connect("clicked", self.dialog_change_server) 
         self.refresh_button.connect("clicked", self.refresh)  
         # Add widgets to box container
         box.add(self.countries_combobox)
@@ -64,12 +65,12 @@ class ExpressGui:
         box.add(self.connect_button)
         box.add(self.refresh_button)
 
-    
-    def locations_dialog(self, widget):
+    def dialog_location_select(self, widget):
         """Open dialog to switch server"""
         self.dialog.show_all()
 
-    def dialog_connect(self, widget):
+    def dialog_change_server(self, widget):
+        """Changes vpn server"""
         location = self.locations_combobox.get_active_text()
         status = self.express.connection_status
         if status is False:
@@ -92,9 +93,9 @@ class ExpressGui:
             self.switch.set_state(True)
 
     def update(self):
+        """Updates the location label and connection status switch"""
         self.update_location_label()
         self.update_switch()
-
 
     def switch_toggle(self, switch, gparam, test):
         """ Callback function for the active signal of the switch
