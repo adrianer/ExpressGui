@@ -4,6 +4,5 @@
 2. Error handling
 3. Add all commands of expressvpn
   * Change protocol
-  * Preferences
 5. Add support for menubar?
 6. Make widgets seperate classes?
