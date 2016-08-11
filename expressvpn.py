@@ -6,10 +6,28 @@ class Expressvpn:
     current_server = ""
     current_country = ""
     servers = {}
+    auto_connect = False
+    prefered_protocol = ""
+    send_diagnostics = True
+
 
     def __init__(self):
         self.status()
         self.ls()
+
+    def preferences(self):
+        stream = subprocess.check_output(["expressvpn","preferences"]).decode("utf-8")
+        stream = stream.split()
+        if stream[1] is "false":
+            stream[1] = False
+        else:
+            stream[1] = True
+        self.prefered_protocol = stream[3]
+        if stream[5] is 'true':
+            self.send_diagnostics = True
+        print(stream)
+
+
 
     def status(self):
         """Returns the status of expressvpn, None if disconnected or the location if
@@ -111,7 +129,6 @@ class Expressvpn:
 
 if __name__ == "__main__":
     # Example of usage
-    if status() is False:
-        connect()
-        server_dict = ls()
-        print_servers(server_dict)
+    express = Expressvpn()
+    express.preferences()
+
