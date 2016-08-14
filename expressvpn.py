@@ -30,7 +30,7 @@ class Expressvpn:
     def autoconnect(self):
         subprocess.call(["expressvpn", "autoconnect"])
 
-    def protocol(self, protocol=None)
+    def protocol(self, protocol=None):
         subprocess.call(["expressvpn", "protocol", protocol])
 
     def status(self):
