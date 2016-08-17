@@ -9,7 +9,7 @@ class Expressvpn:
     auto_connect = False
     prefered_protocol = ""
     send_diagnostics = True
-
+    protocols = ["udp", "auto", "tcp"]
 
     def __init__(self):
         self.status()
@@ -30,7 +30,7 @@ class Expressvpn:
     def autoconnect(self):
         subprocess.call(["expressvpn", "autoconnect"])
 
-    def protocol(self, protocol=None):
+    def protocol(self, protocol="auto"):
         subprocess.call(["expressvpn", "protocol", protocol])
 
     def status(self):
