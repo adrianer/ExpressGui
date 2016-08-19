@@ -14,6 +14,7 @@ class Expressvpn:
     def __init__(self):
         self.status()
         self.ls()
+        self.preferences()
 
     def preferences(self):
         stream = subprocess.check_output(["expressvpn","preferences"]).decode("utf-8")
