@@ -60,12 +60,13 @@ class Window(Gtk.Window):
         """ Callback function for the active signal of the switch
             Connects if active disconnects if inactive
         """
-        location = self.dialog.locations_combobox.get_active_text()
+        #server = self.dialog.locations_combobox.get_active_text()
+        server = self.dialog.server_selected
         if self.switch.get_active():
             # switch active so connect if not already connection_status
-            if location is not None and self.express.connection_status is not True:
+            if server is not None and self.express.connection_status is not True:
                 self.express.disconnect()
-                self.express.connect(location)
+                self.express.connect(server)
             else:
                 self.express.connect()
         else:

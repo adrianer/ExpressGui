@@ -5,7 +5,10 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 
+
+
 class LocationPicker(Gtk.Window):
+    server_selected = None
 
     def __init__(self, parent):
         Gtk.Window.__init__(self, title="Choose a server")
@@ -23,6 +26,7 @@ class LocationPicker(Gtk.Window):
         self.connect("delete_event", self.delete_event)
         # Connect signals
         self.countries_combobox.connect("changed", self.country_change)
+        self.locations_combobox.connect("changed", self.location_change)
         self.connect_button.connect("clicked", self.dialog_change_server) 
         self.refresh_button.connect("clicked", self.refresh)  
         # Add widgets to box container
@@ -30,7 +34,16 @@ class LocationPicker(Gtk.Window):
         box.add(self.locations_combobox)
         box.add(self.connect_button)
         box.add(self.refresh_button)
+        if self.express.current_server != None:
+            self.server_selected = self.express.current_server
+        else:
+            self.server_selected = self.express.servers[self.express.servers['countries'][0]][0]
         self.update_servers()
+
+    def location_change(self, test):
+        index = test.get_active()
+        self.server_selected = self.express.servers[self.server_selected.country][index]
+        
 
     def delete_event(self, widget, event, data=None):
         self.hide()
@@ -43,10 +56,10 @@ class LocationPicker(Gtk.Window):
         location = self.locations_combobox.get_active_text()
         status = self.express.connection_status
         if status is False:
-            self.express.connect(location)
-        elif status is True and self.express.current_server.location != location:
+            self.express.connect(self.server_selected)
+        elif status is True and self.express.current_server.location != self.server_selected.location:
             self.express.disconnect()
-            self.express.connect(location)
+            self.express.connect(self.server_selected)
 
         self.parent.update()
 
@@ -64,15 +77,15 @@ class LocationPicker(Gtk.Window):
         """Updates the combobox containing the server locations"""
         self.locations_combobox.get_model().clear()
         country = self.countries_combobox.get_active_text()
-        for item, location in enumerate(self.express.servers[country]):
-            location = location.location
-            self.locations_combobox.append_text(location)
+        for item, server in enumerate(self.express.servers[country]):
+            self.locations_combobox.append_text(server.location)
             if self.express.current_server != None:
-                if location in self.express.current_server.location:
+                if server.location in self.express.current_server.location:
                     self.locations_combobox.set_active(item)
+                    self.server_selected = server
                 else:
                     self.locations_combobox.set_active(0)
-
+                    self.server_selected = server
 
     def update_servers(self):
         """Gets the servers from express then updates the comboboxs"""

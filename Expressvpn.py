@@ -38,7 +38,7 @@ class Server:
             self.country = stream[0]
             self.location = stream[1]
         if len(stream) is 3:
-            self.number = stream[2]
+            self.location = self.location + " - " + stream[2]
 
 class Expressvpn:
     connection_status = False
@@ -80,10 +80,10 @@ class Expressvpn:
 
             self.connection_status = True
 
-    def connect(self, location=None):
-        if location is not None:
-            stream = subprocess.call(["expressvpn", "connect", location])
-            self.current_server = location
+    def connect(self, server=None):
+        if server is not None:
+            stream = subprocess.call(["expressvpn", "connect", server.alias])
+            self.current_server = server
         else:
             stream = subprocess.call(["expressvpn", "connect"])
         if stream == 0 or 1:
