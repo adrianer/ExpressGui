@@ -6,6 +6,8 @@
 6. Make widgets seperate classes?
 7. Use GObject signals?
 8. Locaiton dialog needs to be dialog class?
+9. Clean up windows.py
+10. File for main program
 
 Bugs
 It shouldn't try to connect when already connected and open for the first time.
