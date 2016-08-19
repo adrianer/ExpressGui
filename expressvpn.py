@@ -57,13 +57,6 @@ class Expressvpn:
         if stream == 0 or 1:
             self.connection_status = False
 
-    def print_servers(server_dict):
-        print('--------------------------')
-        for country in server_dict['countries']:
-            print(country)
-        for location in server_dict[country]:
-            print(location)
-
     def get_countries_locations(self, output):
         """Returns the country and a list of locations of that country"""
         location_list = []
