@@ -1,9 +1,9 @@
 import subprocess
-import Expressvpn
-from LocationPicker import LocationPicker
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+import Expressvpn
+from LocationPicker import LocationPicker
 
 
 class Window(Gtk.Window):
@@ -67,8 +67,8 @@ class Window(Gtk.Window):
             if server is not None and self.express.connection_status is not True:
                 self.express.disconnect()
                 self.express.connect(server)
-            else:
-                self.express.connect()
+            #else:
+               # self.express.connect()
         else:
             # switch set to inactive so disconnect
             self.express.disconnect()
