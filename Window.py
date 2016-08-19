@@ -5,7 +5,6 @@ from gi.repository import Gtk
 import Expressvpn
 from LocationPicker import LocationPicker
 
-
 class Window(Gtk.Window):
 
     def __init__(self, expressvpn):
@@ -38,19 +37,16 @@ class Window(Gtk.Window):
         self.box.pack_start(self.location_chooser_button, False, False, 0)
 
     def update(self):
-        """Updates the location label and connection status switch"""
         self.update_location_label()
         self.update_switch()
 
     def update_location_label(self):
-        """Updates the server location label"""
         if self.express.current_server != None:
             country = self.express.current_server.country
             location = self.express.current_server.location
             self.location_label.set_text(country + " - " + location)
 
     def update_switch(self):
-        """Updates the state of the switch"""
         if self.express.connection_status is False:
             self.switch.set_state(False)
         else:
@@ -60,17 +56,12 @@ class Window(Gtk.Window):
         """ Callback function for the active signal of the switch
             Connects if active disconnects if inactive
         """
-        #server = self.dialog.locations_combobox.get_active_text()
-        server = self.dialog.server_selected
+        server = self.dialog.selector.server_selected
         if self.switch.get_active():
-            # switch active so connect if not already connection_status
             if server is not None and self.express.connection_status is not True:
                 self.express.disconnect()
                 self.express.connect(server)
-            #else:
-               # self.express.connect()
         else:
-            # switch set to inactive so disconnect
             self.express.disconnect()
 
         self.update()
@@ -92,6 +83,7 @@ class Window(Gtk.Window):
 
 
 if __name__ == "__main__":
-    expresss = Expressvpn.Expressvpn()
-    express = Window(expresss)
-    express.main()
+
+    express = Expressvpn.Expressvpn()
+    expresss = Window(express)
+    expresss.main()
