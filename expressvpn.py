@@ -34,37 +34,27 @@ class Expressvpn:
         subprocess.call(["expressvpn", "protocol", protocol])
 
     def status(self):
-        """Returns the status of expressvpn, None if disconnected or the location if
-        connected
-        """
-        # Execute expressvpn status and get the output
         stream = subprocess.check_output(["expressvpn", "status"]).decode('utf-8')
         if "Not connected" in stream:
             self.connection_status = False
         else:
-            # Remove country
             stream = stream.split(None, 2)
-            # Remove trailing newline
             stream = stream[2].strip('\n')
             self.current_server = stream
             self.connection_status = True
 
     def connect(self, location=None):
-        """Connects to the vpn"""
         if location is not None:
             stream = subprocess.call(["expressvpn", "connect", location])
             self.current_server = location
         else:
             stream = subprocess.call(["expressvpn", "connect"])
         if stream == 0 or 1:
-        # Connected
             self.connection_status = True
 
     def disconnect(self):
-        """Disconnects from vpn"""
         stream = subprocess.call(["expressvpn", "disconnect"])
         if stream == 0 or 1:
-        # Disconnected
             self.connection_status = False
 
     def print_servers(server_dict):
@@ -110,7 +100,7 @@ class Expressvpn:
         server_dict = {}
         server_dict['countries'] = []
         for country, location_list in self.get_countries_locations(output):
-        # Add the country to country dictionary key
+            # Add the country to country dictionary key
             server_dict['countries'].append(country)
             # Add the list of locations to the couontry key
             server_dict[country] = location_list
@@ -118,7 +108,7 @@ class Expressvpn:
         return server_dict
 
     def ls(self):
-        """Returns a list of locations"""
+        """Gets the list of locations"""
         output = subprocess.check_output(["expressvpn", "ls"]).decode('utf-8')
         location_list = self.parse_ls_output(output)
         self.servers = location_list
