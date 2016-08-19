@@ -1,10 +1,48 @@
 """module to interact with expressvpn"""
 import subprocess
 
+class Server:
+    alias = ""
+    country = ""
+    location = ""
+    recommended = False
+    number = None
+
+    def __init__(self, stream):
+        if type(stream) is list:
+            self.alias = stream[0]
+            stream = stream[1:]
+            if stream[-1] is "Y":
+                self.recommended = True
+                if len(stream) is 3:
+                    self.parse_location(stream[1])
+                else:
+                    self.parse_location(stream[0])
+            else:
+                if len(stream) is 2:
+                    self.parse_location(stream[1])
+                else:
+                    self.parse_location(stream[0])
+
+        else:
+            stream = stream.split(None, 2)
+            stream = stream[2].strip('\n')
+            self.parse_location(stream)
+
+    def parse_location(self, stream):
+        stream = [x.strip(' ') for x in stream.split('-')]
+        if len(stream) is 1:
+            self.country = stream[0]
+            self.location = stream[0]
+        else:
+            self.country = stream[0]
+            self.location = stream[1]
+        if len(stream) is 3:
+            self.number = stream[2]
+
 class Expressvpn:
     connection_status = False
-    current_server = ""
-    current_country = ""
+    current_server = None
     servers = {}
     auto_connect = False
     prefered_protocol = ""
@@ -26,7 +64,6 @@ class Expressvpn:
         self.prefered_protocol = stream[3]
         if stream[5] is 'true':
             self.send_diagnostics = True
-        print(stream)
 
     def autoconnect(self):
         subprocess.call(["expressvpn", "autoconnect"])
@@ -39,9 +76,8 @@ class Expressvpn:
         if "Not connected" in stream:
             self.connection_status = False
         else:
-            stream = stream.split(None, 2)
-            stream = stream[2].strip('\n')
-            self.current_server = stream
+            self.current_server = Server(stream)
+
             self.connection_status = True
 
     def connect(self, location=None):
@@ -68,25 +104,31 @@ class Expressvpn:
         for server in output:
             server = server.split('\t')
             server = list(filter(None, server))       # Remove blank items
+            if server:
+                server = Server(server)
             # Check for new country
-            if len(server) == 4 or len(server) == 3 and server[2] != "Y":
-                # New country
-                if country is not None:
-                    # return the country and its list of locations
-                    yield country, location_list
-                    # Start a new list
-                    location_list = []
-                    # Add the location to the list
-                    location_list.append(server[2:])
-                    # Set new current country
-                    country = server[1]
+            #if len(server) == 4 or len(server) == 3 and server[2] != "Y":
+                if len(location_list) is not 0:
+                    if (server.country) != location_list[-1].country:
+                        # New country
+                        # return the country and its list of locations
+                        #country = country.split('(')[0]
+                        yield location_list[-1].country, location_list
+                        # Start a new list
+                        location_list = []
+                        # Add the location to the list
+                        location_list.append(server)
+                        # Set new current country
+                        country = server.country
+                    else:
+                        # FIX - Why is this needed?
+                        location_list.append(server)      # Add location
+
                 else:
                     # The first location from output
-                    location_list.append(server[2:])
+                    location_list.append(server)
                     # Set current country
-                    country = server[1]
-            else:
-                location_list.append(server[1:])      # Add location
+                    country = server.country
 
     def parse_ls_output(self, output):
         """Returns a dictionary containing a list of countries and a list of locations
@@ -95,8 +137,9 @@ class Expressvpn:
         server_dict['countries'] = []
         for country, location_list in self.get_countries_locations(output):
             # Add the country to country dictionary key
+            #print(repr(country))
             server_dict['countries'].append(country)
-            # Add the list of locations to the couontry key
+            # Add the list of locations to the couontry key  
             server_dict[country] = location_list
 
         return server_dict
