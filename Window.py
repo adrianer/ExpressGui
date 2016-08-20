@@ -2,7 +2,7 @@ import subprocess
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-import Expressvpn
+from Expressvpn import Expressvpn
 from LocationPicker import LocationPicker
 
 class Window(Gtk.Window):
@@ -84,6 +84,6 @@ class Window(Gtk.Window):
 
 if __name__ == "__main__":
 
-    express = Expressvpn.Expressvpn()
+    express = Expressvpn()
     expresss = Window(express)
     expresss.main()
