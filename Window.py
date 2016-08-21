@@ -6,6 +6,7 @@ from Expressvpn import Expressvpn
 from LocationPicker import LocationPicker
 from LocationPicker import Selector
 
+
 class ConnectSwitch(Gtk.Switch):
     def __init__(self, express, selector):
         Gtk.Switch.__init__(self)
@@ -42,12 +43,10 @@ class LocationLabel(Gtk.Label):
             location = self.selector.server_selected.location
             self.set_text(country + " - " + location)
         elif self.express.last_server != None:
-            country = self.selector.server_selected.country
-            location = self.selector.server_selected.location
+            server = self.express.last_server
+            country = server.country
+            location = server.location
             self.set_text(country + " - " + location)
-        else:
-            self.set_text("Error")
-
 
 
 class LocationButton(Gtk.Button):

@@ -12,6 +12,7 @@ class Expressvpn:
     prefered_protocol = ""
     send_diagnostics = True
     protocols = ["udp", "auto", "tcp"]
+    last_server = None
 
     def __init__(self):
         self.status()

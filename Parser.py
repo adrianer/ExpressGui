@@ -15,8 +15,6 @@ def parse_ls_recent(output):
     for server in output:
         server = server.split('\t')
         server = list(filter(None, server))[:3]
-        print("test")
-        print(server)
         country, location = parse_location_item(server[2])
         alias = server[0]
         server = Server(alias, country, location, None)

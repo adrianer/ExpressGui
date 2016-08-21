@@ -14,4 +14,4 @@ When opened and not connected and the choose location button is pressed. The loc
 
 Choose location dialog can be opened a billion times.
 
-Seg faults. Something to do with the change server button. Possibly the threading
+Fix segfaults (has something to do with threading of change server or the comboboxs)
