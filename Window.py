@@ -24,22 +24,22 @@ class ConnectSwitch(Gtk.Switch):
             Connects if active disconnects if inactive
         """
         server = self.selector.server_selected
-        if self.get_active():
-            if server is not None and self.express.connection_status is not True:
-                self.express.disconnect()
-                self.express.connect(server)
-        else:
+        status = self.get_active()
+        if status is True and self.express.connection_status != True:
+            self.express.connect(server)
+        elif status is False and self.express.connection_status != False:
             self.express.disconnect()
 
 class LocationLabel(Gtk.Label):
-    def __init__(self, express):
+    def __init__(self, express, selector):
         Gtk.Label.__init__(self)
         self.express = express
+        self.selector = selector
 
     def update(self):
         if self.express.current_server != None:
-            country = self.express.current_server.country
-            location = self.express.current_server.location
+            country = self.selector.server_selected.country
+            location = self.selector.server_selected.location
             self.set_text(country + " - " + location)
 
 class LocationButton(Gtk.Button):
@@ -56,7 +56,7 @@ class Window(Gtk.Window):
     def __init__(self):
         self.express = Expressvpn()
         self.selector = Selector()
-        self.location_dialog = LocationPicker(self.express, self.selector, self.update)
+        self.location_dialog = LocationPicker(self.express, self.selector, self)
         self.create_main_window()
         self.create_widgets()
         self.update()
@@ -69,13 +69,10 @@ class Window(Gtk.Window):
         self.connect("destroy", self.destroy)
         
     def create_widgets(self):
-        # Widget container
         box = Gtk.VBox(False, 0)
-        # Create the widgets
         self.switch = ConnectSwitch(self.express, self.selector)
-        self.location_label = LocationLabel(self.express)
+        self.location_label = LocationLabel(self.express, self.selector)
         self.location_chooser_button = LocationButton(self.location_dialog)
-        # Pack the widgets to container
         box.add(self.switch)
         box.add(self.location_label)
         box.add(self.location_chooser_button)

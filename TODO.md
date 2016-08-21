@@ -14,4 +14,3 @@ Connect gets called twice? might be an issues with the way the toggle switch wor
 
 Choose location dialog can be opened a billion times.
 
-Switch should turn off when connecting to a new server via the location chooser.

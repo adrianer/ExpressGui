@@ -56,6 +56,7 @@ class Expressvpn:
     def disconnect(self):
         stream = subprocess.call(["expressvpn", "disconnect"])
         if stream == 0 or 1:
+            print("test")
             self.connection_status = False
 
     def ls(self):

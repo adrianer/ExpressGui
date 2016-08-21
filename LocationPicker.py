@@ -3,6 +3,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 import Expressvpn
+from threading import Thread
 
 
 
@@ -66,16 +67,28 @@ class ChangeServerButton(Gtk.Button):
         self.express = express
         self.update_parent = update_parent
 
+    def disconnect(self):
+        self.express.disconnect()
+        self.update_parent()
+        connect_thread = Thread(target=self.connection)
+        connect_thread.start()
+
+    def connection(self):
+        self.express.connect(self.server)
+        self.update_parent()
+
     def change_server(self, widget):
         server = self.selector.server_selected
+        self.server = server
         status = self.express.connection_status
         if status is False:
             self.express.connect(server)
         elif status is True and self.express.current_server.location != server.location:
-            self.express.disconnect()
-            self.express.connect(server)
-            self.update_parent()
-
+            print("CHANGE SERVER")
+            disconnect_thread = Thread(target=self.disconnect)
+            disconnect_thread.start()
+            
+          
 
 class RefreshButton(Gtk.Button):
 
@@ -91,10 +104,10 @@ class RefreshButton(Gtk.Button):
 
 class LocationPicker(Gtk.Window):
 
-    def __init__(self, express, selector, update_parent):
-        self.update_parent = update_parent # Updates the label and switch
+    def __init__(self, express, selector, parent):
+        self.update_parent = parent.update # Updates the label and switch
         Gtk.Window.__init__(self, title="Choose a server")
-        self.express = express
+        self.express = parent.express
         self.selector = selector
         if self.express.current_server != None:
             self.selector.server_selected = self.express.current_server
