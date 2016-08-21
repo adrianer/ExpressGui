@@ -35,7 +35,6 @@ class CountryComboBox(Gtk.ComboBoxText):
 
     def get_countries(self):
         for item, country in enumerate(self.express.servers['countries']):
-            print(country)
             self.append_text(country)
             
     def update_selection(self):
