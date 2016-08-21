@@ -28,7 +28,7 @@ def parse_ls(output):
     server_dict = {}
     server_dict['countries'] = []
     for country, location_list in parse_server_list(output):
-        server_dict['countries'].append(country) 
+        server_dict['countries'].append(country)
         server_dict[country] = location_list
     return server_dict
 
@@ -81,6 +81,7 @@ def parse_server_item(stream):
 
     return Server(alias, country, location, recommended)
 
+
 def parse_location_item(stream):
     stream = [x.strip(' ') for x in stream.split('-')]
     if len(stream) is 1:
@@ -93,4 +94,3 @@ def parse_location_item(stream):
         location = location + " - " + stream[2]
 
     return country, location
-

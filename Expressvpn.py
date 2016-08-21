@@ -21,7 +21,8 @@ class Expressvpn:
         self.preferences()
 
     def preferences(self):
-        stream = subprocess.check_output(["expressvpn","preferences"]).decode("utf-8")
+        stream = subprocess.check_output(
+            ["expressvpn", "preferences"]).decode("utf-8")
         stream = stream.split()
         if stream[1] is "false":
             stream[1] = False
@@ -38,7 +39,8 @@ class Expressvpn:
         subprocess.call(["expressvpn", "protocol", protocol])
 
     def status(self):
-        stream = subprocess.check_output(["expressvpn", "status"]).decode('utf-8')
+        stream = subprocess.check_output(
+            ["expressvpn", "status"]).decode('utf-8')
         if "Not connected" in stream:
             self.connection_status = False
         else:
@@ -70,7 +72,8 @@ class Expressvpn:
         self.servers = Parser.parse_ls(output)
 
     def ls_recent(self):
-        output = subprocess.check_output(["expressvpn", "ls", "recent"]).decode('utf-8')
+        output = subprocess.check_output(
+            ["expressvpn", "ls", "recent"]).decode('utf-8')
         recent_servers = Parser.parse_ls_recent(output)
         return recent_servers
 
@@ -81,10 +84,7 @@ class Expressvpn:
             return True
 
 
-
-
 if __name__ == "__main__":
     # Example of usage
     express = Expressvpn()
     express.preferences()
-

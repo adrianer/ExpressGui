@@ -8,6 +8,7 @@ from LocationPicker import Selector
 
 
 class ConnectSwitch(Gtk.Switch):
+
     def __init__(self, express, selector):
         Gtk.Switch.__init__(self)
         self.express = express
@@ -26,23 +27,25 @@ class ConnectSwitch(Gtk.Switch):
         """
         server = self.selector.server_selected
         status = self.get_active()
-        if status is True and self.express.connection_status != True:
+        if status is True and self.express.connection_status is not True:
             self.express.connect(server)
-        elif status is False and self.express.connection_status != False:
+        elif status is False and self.express.connection_status is not False:
             self.express.disconnect()
 
+
 class LocationLabel(Gtk.Label):
+
     def __init__(self, express, selector):
         Gtk.Label.__init__(self)
         self.express = express
         self.selector = selector
 
     def update(self):
-        if self.express.current_server != None:
+        if self.express.current_server is not None:
             country = self.selector.server_selected.country
             location = self.selector.server_selected.location
             self.set_text(country + " - " + location)
-        elif self.express.last_server != None:
+        elif self.express.last_server is not None:
             server = self.express.last_server
             country = server.country
             location = server.location
@@ -50,6 +53,7 @@ class LocationLabel(Gtk.Label):
 
 
 class LocationButton(Gtk.Button):
+
     def __init__(self, dialog):
         Gtk.Button.__init__(self, "Choose Location")
         self.connect("clicked", self.dialog_show)
@@ -58,12 +62,14 @@ class LocationButton(Gtk.Button):
     def dialog_show(self, widget):
         self.dialog.show_all()
 
+
 class Window(Gtk.Window):
 
     def __init__(self):
         self.express = Expressvpn()
         self.selector = Selector(self.express)
-        self.location_dialog = LocationPicker(self.express, self.selector, self.update)
+        self.location_dialog = LocationPicker(self.express, self.selector,
+                                              self.update)
         self.create_main_window()
         self.create_widgets()
         self.update()
@@ -74,7 +80,7 @@ class Window(Gtk.Window):
         self.set_border_width(10)
         self.connect("delete_event", self.delete_event)
         self.connect("destroy", self.destroy)
-        
+
     def create_widgets(self):
         box = Gtk.VBox(False, 0)
         self.switch = ConnectSwitch(self.express, self.selector)
