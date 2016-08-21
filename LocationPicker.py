@@ -9,16 +9,26 @@ from threading import Thread
 
 class Selector:
     server_selected = None
+    def __init__(self, express):
+        self.express = express
+        self.server_selected = express.current_server
+        if self.express.current_server != None:
+            self.server_selected = self.express.current_server
+        else:
+            #self.server_selected = self.express.servers[self.express.servers['countries'][0]][0]
+            self.server_selected = self.express.last_server
+
 
 
 class CountryComboBox(Gtk.ComboBoxText):
 
-    def __init__(self, express, selector, locations):
+    def __init__(self, express, selector, location_box):
         Gtk.ComboBoxText.__init__(self)
         self.connect("changed", self.country_change)
         self.express = express
         self.selector = selector
-        self.locations = locations
+        self.location_box = location_box
+        self.update()
 
     def update(self):
         for item, country in enumerate(self.express.servers['countries']):
@@ -31,7 +41,7 @@ class CountryComboBox(Gtk.ComboBoxText):
 
     def country_change(self, widget):
         self.selector.server_selected.country = self.get_active_text()
-        self.locations.update()
+        self.location_box.update()
 
 class LocationComboBox(Gtk.ComboBoxText):
 
@@ -40,15 +50,14 @@ class LocationComboBox(Gtk.ComboBoxText):
         self.connect("changed", self.location_change)
         self.express = express
         self.selector = selector
+        self.update()
 
     def location_change(self, test):
         index = test.get_active()
-        print(index)
         self.selector.server_selected = self.express.servers[self.selector.server_selected.country][index]
 
     def update(self):
         self.get_model().clear()
-        print("bacon")
         country = self.selector.server_selected.country
         for item, server in enumerate(self.express.servers[country]):
             self.append_text(server.location)
@@ -100,7 +109,6 @@ class RefreshButton(Gtk.Button):
 
     def refresh(self, widget):
         self.express.refresh()
-        self.update_servers()
 
 
 class LocationPicker(Gtk.Window):
@@ -110,14 +118,8 @@ class LocationPicker(Gtk.Window):
         self.update_parent = update_parent  #Updates the label and switch
         self.express = express
         self.selector = selector
-        if self.express.current_server != None:
-            self.selector.server_selected = self.express.current_server
-        else:
-            self.selector.server_selected = self.express.servers[self.express.servers['countries'][0]][0]
-
         self.create_widgets()
         self.add(self.add_widgets())
-        self.update_servers()
 
     def create_widgets(self): 
         self.locations_combobox = LocationComboBox(self.express, self.selector)
@@ -132,12 +134,3 @@ class LocationPicker(Gtk.Window):
         box.add(self.connect_button)
         box.add(self.refresh_button)
         return box
-
-    def update_servers(self):
-        self.get_servers()
-        self.countries_combobox.update()
-        self.locations_combobox.update()
-
-    def get_servers(self):
-        self.express.ls()
-

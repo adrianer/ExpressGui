@@ -41,6 +41,14 @@ class LocationLabel(Gtk.Label):
             country = self.selector.server_selected.country
             location = self.selector.server_selected.location
             self.set_text(country + " - " + location)
+        elif self.express.last_server != None:
+            country = self.selector.server_selected.country
+            location = self.selector.server_selected.location
+            self.set_text(country + " - " + location)
+        else:
+            self.set_text("Error")
+
+
 
 class LocationButton(Gtk.Button):
     def __init__(self, dialog):
@@ -55,7 +63,7 @@ class Window(Gtk.Window):
 
     def __init__(self):
         self.express = Expressvpn()
-        self.selector = Selector()
+        self.selector = Selector(self.express)
         self.location_dialog = LocationPicker(self.express, self.selector, self.update)
         self.create_main_window()
         self.create_widgets()

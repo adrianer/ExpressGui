@@ -16,6 +16,7 @@ class Expressvpn:
     def __init__(self):
         self.status()
         self.ls()
+        self.last_server = self.ls_recent()[0]
         self.preferences()
 
     def preferences(self):
@@ -65,7 +66,12 @@ class Expressvpn:
     def ls(self):
         """Gets the list of locations"""
         output = subprocess.check_output(["expressvpn", "ls"]).decode('utf-8')
-        self.servers = Parser.parse_ls_output(output)
+        self.servers = Parser.parse_ls(output)
+
+    def ls_recent(self):
+        output = subprocess.check_output(["expressvpn", "ls", "recent"]).decode('utf-8')
+        recent_servers = Parser.parse_ls_recent(output)
+        return recent_servers
 
     def refresh(self):
         """Refreshes the list of locations"""
