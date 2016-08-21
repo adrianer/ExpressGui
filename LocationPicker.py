@@ -17,6 +17,9 @@ class Selector:
         elif self.express.last_server != None:
             self.server_selected = self.express.last_server
 
+    def get_server_text(self):
+        return self.server_selected.country + " - " + self.server_selected.location
+
 
 class CountryComboBox(Gtk.ComboBoxText):
 
@@ -26,13 +29,19 @@ class CountryComboBox(Gtk.ComboBoxText):
         self.express = express
         self.selector = selector
         self.location_box = location_box
+        self.get_countries()
+        self.update_selection()
+        self.location_box.update()
 
-    def update(self):
+    def get_countries(self):
         for item, country in enumerate(self.express.servers['countries']):
+            print(country)
             self.append_text(country)
-            if self.selector.server_selected != None:
-                if country in self.selector.server_selected.country:
-                    self.set_active(item)
+            
+    def update_selection(self):
+        for item in range(len(self.get_model())):
+            if self.get_model()[item][0] in self.selector.server_selected.country:
+                self.set_active(item)
 
     def country_change(self, widget):
         self.selector.server_selected.country = self.get_active_text()
@@ -57,11 +66,9 @@ class LocationComboBox(Gtk.ComboBoxText):
         country = self.selector.server_selected.country
         for item, server in enumerate(self.express.servers[country]):
             self.append_text(server.location)
-            if self.selector.server_selected != None:
-                if server.location in self.selector.server_selected.location:
-                    self.set_active(item)
-                    self.location_change(self)
-
+            if server.location in self.selector.server_selected.location:
+                self.set_active(item)
+                self.location_change(self)
 
 class ChangeServerButton(Gtk.Button):
 
@@ -83,13 +90,13 @@ class ChangeServerButton(Gtk.Button):
         self.update_parent()
 
     def change_server(self, widget):
-        server = self.selector.server_selected
-        self.server = server
+        self.server = self.selector.server_selected
         status = self.express.connection_status
         if status is False:
-            self.express.connect(server)
-        elif status is True and self.express.current_server.location != server.location:
-            print("Changing server to " + server.location)
+            self.express.connect(self.server)
+            self.update_parent()
+        elif status is True and self.express.current_server.location != self.server.location:
+            print("Changing server to " + self.server.location)
             disconnect_thread = Thread(target=self.disconnect_connect)
             disconnect_thread.start()
 
@@ -114,11 +121,6 @@ class LocationPicker(Gtk.Window):
         self.selector = selector
         self.create_widgets()
         self.add(self.add_widgets())
-        self.update()
-
-    def update(self):
-        self.locations_combobox.update()
-        self.countries_combobox.update()
 
     def create_widgets(self):
         self.locations_combobox = LocationComboBox(self.express, self.selector)

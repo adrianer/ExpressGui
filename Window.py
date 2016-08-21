@@ -25,13 +25,13 @@ class ConnectSwitch(Gtk.Switch):
         """ Callback function for the active signal of the switch
             Connects if active disconnects if inactive
         """
-        server = self.selector.server_selected
+
         status = self.get_active()
         if status is True and self.express.connection_status is not True:
-            self.express.connect(server)
+            self.express.connect(self.selector.server_selected)
         elif status is False and self.express.connection_status is not False:
             self.express.disconnect()
-
+            
 
 class LocationLabel(Gtk.Label):
 
@@ -41,16 +41,7 @@ class LocationLabel(Gtk.Label):
         self.selector = selector
 
     def update(self):
-        if self.express.current_server is not None:
-            country = self.selector.server_selected.country
-            location = self.selector.server_selected.location
-            self.set_text(country + " - " + location)
-        elif self.express.last_server is not None:
-            server = self.express.last_server
-            country = server.country
-            location = server.location
-            self.set_text(country + " - " + location)
-
+        self.set_text(self.selector.get_server_text())
 
 class LocationButton(Gtk.Button):
 

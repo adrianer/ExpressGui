@@ -1,3 +1,5 @@
+"""An expressvpn server"""
+
 class Server:
     alias = ""
     country = ""
