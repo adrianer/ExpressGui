@@ -45,6 +45,7 @@ class Expressvpn:
             self.connection_status = True
 
     def connect(self, server=None):
+        print("Attempting to Connect")
         if server is not None:
             stream = subprocess.call(["expressvpn", "connect", server.alias])
             self.current_server = server
@@ -52,11 +53,12 @@ class Expressvpn:
             stream = subprocess.call(["expressvpn", "connect"])
         if stream == 0 or 1:
             self.connection_status = True
+            print("Connection Success")
 
     def disconnect(self):
         stream = subprocess.call(["expressvpn", "disconnect"])
         if stream == 0 or 1:
-            print("test")
+            print("Disconnect Success")
             self.connection_status = False
 
     def ls(self):
