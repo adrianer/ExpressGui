@@ -5,6 +5,10 @@
 7. Location dialog needs to be dialog class?
 8. File for main program
 9. Add more logging
+10. Add expresvpn list recommended
+11. Add expressvpn list recent (this can be used to show default server)
+12. Add latency and maybe other statistics
+
 
 Bugs
 
