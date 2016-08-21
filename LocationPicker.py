@@ -5,6 +5,11 @@ from gi.repository import Gtk
 import Expressvpn
 
 
+
+class Selector:
+    server_selected = None
+
+
 class CountryComboBox(Gtk.ComboBoxText):
 
     def __init__(self, express, selector, locations):
@@ -56,8 +61,8 @@ class ChangeServerButton(Gtk.Button):
 
     def __init__(self, express, selector):
         Gtk.Button.__init__(self, label="Change Server")
+        self.connect("clicked",self.change_server)
         self.selector = selector
-        self.connect("clicked", self.change_server) 
         self.express = express
 
     def change_server(self, widget):
@@ -80,16 +85,13 @@ class RefreshButton(Gtk.Button):
         self.express.refresh()
         self.update_servers()
 
-class Selector:
-    server_selected = None
 
 class LocationPicker(Gtk.Window):
 
-    def __init__(self, parent):
+    def __init__(self, express, selector):
         Gtk.Window.__init__(self, title="Choose a server")
-        self.parent = parent
-        self.express = parent.express
-        self.selector = Selector()
+        self.express = express
+        self.selector = selector
         if self.express.current_server != None:
             self.selector.server_selected = self.express.current_server
         else:
