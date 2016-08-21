@@ -1,5 +1,18 @@
 from Server import Server
 
+def parse_preferences(stream):
+    send_diagnostics = False
+    stream = stream.split()
+    if stream[1] is "false":
+        stream[1] = False
+    else:
+        stream[1] = True
+    auto_connect = stream[1]
+    prefered_protocol = stream[3]
+    if stream[5] is 'true':
+        send_diagnostics = True
+    return auto_connect, prefered_protocol, send_diagnostics
+
 
 def parse_status(stream):
     stream = stream.split(None, 2)

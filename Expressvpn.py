@@ -3,14 +3,21 @@ import subprocess
 import Parser
 from Server import Server
 
+class Preferences:
+    auto_connect = False
+    prefered_protocol = ""
+    send_diagnostics = True
+
+    def __init__(self, auto_connect, prefered_protocol, send_diagnostics):
+        self.auto_connect = auto_connect
+        self.prefered_protocol = prefered_protocol
+        self.send_diagnostics = send_diagnostics
+
 
 class Expressvpn:
     connection_status = False
     current_server = None
     servers = {}
-    auto_connect = False
-    prefered_protocol = ""
-    send_diagnostics = True
     protocols = ["udp", "auto", "tcp"]
     last_server = None
 
@@ -21,16 +28,10 @@ class Expressvpn:
         self.preferences()
 
     def preferences(self):
-        stream = subprocess.check_output(
+        output = subprocess.check_output(
             ["expressvpn", "preferences"]).decode("utf-8")
-        stream = stream.split()
-        if stream[1] is "false":
-            stream[1] = False
-        else:
-            stream[1] = True
-        self.prefered_protocol = stream[3]
-        if stream[5] is 'true':
-            self.send_diagnostics = True
+        autoconnect, prefered_protocol, send_diagnostics = Parser.parse_preferences(output)
+        self.preferences = Preferences(autoconnect, prefered_protocol, send_diagnostics)
 
     def autoconnect(self):
         subprocess.call(["expressvpn", "autoconnect"])
@@ -67,7 +68,6 @@ class Expressvpn:
             self.connection_status = False
 
     def ls(self):
-        """Gets the list of locations"""
         output = subprocess.check_output(["expressvpn", "ls"]).decode('utf-8')
         self.servers = Parser.parse_ls(output)
 
@@ -78,7 +78,6 @@ class Expressvpn:
         return recent_servers
 
     def refresh(self):
-        """Refreshes the list of locations"""
         output = subprocess.call(["expressvpn", "refresh"])
         if output == 0:
             return True
