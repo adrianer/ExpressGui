@@ -1,7 +1,7 @@
 import subprocess
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
+from gi.repository import Gtk, GObject
 from Expressvpn import Expressvpn
 from LocationPicker import LocationPicker
 from LocationPicker import Selector
@@ -56,7 +56,7 @@ class Window(Gtk.Window):
     def __init__(self):
         self.express = Expressvpn()
         self.selector = Selector()
-        self.location_dialog = LocationPicker(self.express, self.selector)
+        self.location_dialog = LocationPicker(self.express, self.selector, self.update)
         self.create_main_window()
         self.create_widgets()
         self.update()
@@ -97,5 +97,6 @@ class Window(Gtk.Window):
 
 
 if __name__ == "__main__":
+
     expressgui = Window()
     expressgui.main()
