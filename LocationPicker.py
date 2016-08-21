@@ -87,7 +87,7 @@ class ChangeServerButton(Gtk.Button):
         if status is False:
             self.express.connect(server)
         elif status is True and self.express.current_server.location != server.location:
-            print("Changing server..")
+            print("Changing server to " + server.location)
             disconnect_thread = Thread(target=self.disconnect_connect)
             disconnect_thread.start()
             
