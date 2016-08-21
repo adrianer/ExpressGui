@@ -46,6 +46,7 @@ class Expressvpn:
 
     def connect(self, server=None):
         print("Attempting to Connect")
+
         if server is not None:
             stream = subprocess.call(["expressvpn", "connect", server.alias])
             self.current_server = server

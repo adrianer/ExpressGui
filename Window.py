@@ -56,7 +56,7 @@ class Window(Gtk.Window):
     def __init__(self):
         self.express = Expressvpn()
         self.selector = Selector()
-        self.location_dialog = LocationPicker(self.express, self.selector, self)
+        self.location_dialog = LocationPicker(self.express, self.selector, self.update)
         self.create_main_window()
         self.create_widgets()
         self.update()

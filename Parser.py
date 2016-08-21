@@ -27,8 +27,8 @@ def get_countries_locations(output):
         server = list(filter(None, server))       # Remove blank items
         if server:
             server = parse_ls_server_item(server)
-        # Check for new country
-        #if len(server) == 4 or len(server) == 3 and server[2] != "Y":
+            # Check for new country
+            #if len(server) == 4 or len(server) == 3 and server[2] != "Y":
             if len(location_list) is not 0:
                 if (server.country) != location_list[-1].country:
                     # New country

@@ -43,20 +43,22 @@ class LocationComboBox(Gtk.ComboBoxText):
 
     def location_change(self, test):
         index = test.get_active()
+        print(index)
         self.selector.server_selected = self.express.servers[self.selector.server_selected.country][index]
 
     def update(self):
         self.get_model().clear()
+        print("bacon")
         country = self.selector.server_selected.country
         for item, server in enumerate(self.express.servers[country]):
             self.append_text(server.location)
             if self.express.current_server != None:
                 if server.location in self.express.current_server.location:
                     self.set_active(item)
-                    self.selector.server_selected = server
+                    self.location_change(self)
                 else:
                     self.set_active(0)
-                    self.selector.server_selected = server
+                    self.location_change(self)
 
 class ChangeServerButton(Gtk.Button):
 
@@ -67,13 +69,13 @@ class ChangeServerButton(Gtk.Button):
         self.express = express
         self.update_parent = update_parent
 
-    def disconnect(self):
+    def disconnect_connect(self):
         self.express.disconnect()
         self.update_parent()
-        connect_thread = Thread(target=self.connection)
+        connect_thread = Thread(target=self.connectionss)
         connect_thread.start()
 
-    def connection(self):
+    def connectionss(self):
         self.express.connect(self.server)
         self.update_parent()
 
@@ -81,15 +83,14 @@ class ChangeServerButton(Gtk.Button):
         server = self.selector.server_selected
         self.server = server
         status = self.express.connection_status
+        print(server.alias)
         if status is False:
             self.express.connect(server)
         elif status is True and self.express.current_server.location != server.location:
             print("Changing server..")
-            disconnect_thread = Thread(target=self.disconnect)
+            disconnect_thread = Thread(target=self.disconnect_connect)
             disconnect_thread.start()
             
-          
-
 class RefreshButton(Gtk.Button):
 
     def __init__(self, express):
@@ -104,10 +105,10 @@ class RefreshButton(Gtk.Button):
 
 class LocationPicker(Gtk.Window):
 
-    def __init__(self, express, selector, parent):
-        self.update_parent = parent.update # Updates the label and switch
+    def __init__(self, express, selector, update_parent):
         Gtk.Window.__init__(self, title="Choose a server")
-        self.express = parent.express
+        self.update_parent = update_parent  #Updates the label and switch
+        self.express = express
         self.selector = selector
         if self.express.current_server != None:
             self.selector.server_selected = self.express.current_server
