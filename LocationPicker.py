@@ -11,7 +11,6 @@ class Selector:
 
     def __init__(self, express):
         self.express = express
-        self.server_selected = express.current_server
         if self.express.current_server != None:
             self.server_selected = self.express.current_server
         elif self.express.last_server != None:
@@ -56,9 +55,8 @@ class LocationComboBox(Gtk.ComboBoxText):
         self.selector = selector
 
     def location_change(self, test):
-        index = test.get_active()
         self.selector.server_selected = self.express.servers[
-            self.selector.server_selected.country][index]
+            self.selector.server_selected.country][self.get_active()]
 
     def update(self):
         self.get_model().clear()
