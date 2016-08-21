@@ -14,4 +14,4 @@ Connect gets called twice? might be an issues with the way the toggle switch wor
 
 Choose location dialog can be opened a billion times.
 
-Crashes when server changed for second time
+Crashes when server changed with high connect latency
