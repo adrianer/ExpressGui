@@ -13,3 +13,5 @@ When opened and not connected and the choose location button is pressed. The loc
 Connect gets called twice? might be an issues with the way the toggle switch works.
 
 Choose location dialog can be opened a billion times.
+
+Crashes when server changed for second time
