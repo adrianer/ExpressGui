@@ -117,7 +117,6 @@ class LocationPicker(Gtk.Window):
         self.express = express
         self.selector = selector
         self.create_widgets()
-        self.add(self.add_widgets())
 
     def create_widgets(self):
         self.locations_combobox = LocationComboBox(self.express, self.selector)
@@ -133,4 +132,4 @@ class LocationPicker(Gtk.Window):
         box.add(self.locations_combobox)
         box.add(self.connect_button)
         box.add(self.refresh_button)
-        return box
+        self.add(box)
