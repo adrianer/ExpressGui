@@ -6,4 +6,5 @@ ExpressGui will simply call the commands of the command line expressvpn program 
 Work in progress.
 
 ![Screenshot](https://github.com/pancaketest/ExpressGui/raw/master/screenshots/window.png)
+
 ![Screenshot](https://github.com/pancaketest/ExpressGui/raw/master/screenshots/locationchooser.png)
