@@ -10,7 +10,7 @@ EXPRESS=$(wildcard build/expressvpn/*.c)
 cython:
 	mkdir -p build
 	cython --embed Window.py -o build
-	$(foreach dep,$(DEPS), $(MAKE) $(dep))
+	make $(DEPS) -B
 	make -C expressvpn
 	mkdir -p build/expressvpn
 	cp -v expressvpn/build/* build
