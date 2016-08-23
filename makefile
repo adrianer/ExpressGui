@@ -1,15 +1,13 @@
-THIS_FILE := $(lastword $(MAKEFILE_LIST))
-
 CYTHON=cython
 CC=gcc
-DEPS=LocationPicker.py
+DEPS=location_picker.py
 BUILD=build
 FILES=$(wildcard build/*.c)
 EXPRESS=$(wildcard build/expressvpn/*.c)
 
 cython:
 	mkdir -p build
-	cython --embed Window.py -o build
+	cython --embed window.py -o build
 	make $(DEPS) -B
 	make -C expressvpn
 	mkdir -p build/expressvpn

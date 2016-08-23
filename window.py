@@ -3,8 +3,8 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GObject
 from expressvpn import Expressvpn
-from LocationPicker import LocationPicker
-from LocationPicker import Selector
+from location_picker import LocationPicker
+from location_picker import Selector
 
 
 class ConnectSwitch(Gtk.Switch):
@@ -25,7 +25,6 @@ class ConnectSwitch(Gtk.Switch):
         """ Callback function for the active signal of the switch
             Connects if active disconnects if inactive
         """
-
         status = self.get_active()
         if status is True and self.express.connection_status is not True:
             self.express.connect(self.selector.server_selected)
@@ -73,10 +72,10 @@ class Window(Gtk.Window):
         self.connect("destroy", self.destroy)
 
     def create_widgets(self):
-        box = Gtk.VBox(False, 0)
         self.switch = ConnectSwitch(self.express, self.selector)
         self.location_label = LocationLabel(self.express, self.selector)
         self.location_chooser_button = LocationButton(self.location_dialog)
+        box = Gtk.VBox(False, 0)
         box.add(self.switch)
         box.add(self.location_label)
         box.add(self.location_chooser_button)
