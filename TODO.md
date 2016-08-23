@@ -13,3 +13,5 @@ Bugs
 When opened and not connected and the choose location button is pressed. The location combobox is blank.
 
 Choose location dialog can be opened a billion times.
+
+Locationpicker selects wrong server sometimes?
