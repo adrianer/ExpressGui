@@ -1,18 +1,6 @@
-"""module to interact with expressvpn"""
 import subprocess
-import Parser
-from Server import Server
-
-class Preferences:
-    auto_connect = False
-    prefered_protocol = ""
-    send_diagnostics = True
-
-    def __init__(self, auto_connect, prefered_protocol, send_diagnostics):
-        self.auto_connect = auto_connect
-        self.prefered_protocol = prefered_protocol
-        self.send_diagnostics = send_diagnostics
-
+from expressvpn import parser
+from expressvpn.preferences import Preferences
 
 class Expressvpn:
     connection_status = False
@@ -30,7 +18,7 @@ class Expressvpn:
     def preferences(self):
         output = subprocess.check_output(
             ["expressvpn", "preferences"]).decode("utf-8")
-        autoconnect, prefered_protocol, send_diagnostics = Parser.parse_preferences(output)
+        autoconnect, prefered_protocol, send_diagnostics = parser.parse_preferences(output)
         self.preferences = Preferences(autoconnect, prefered_protocol, send_diagnostics)
 
     def autoconnect(self):
@@ -45,7 +33,7 @@ class Expressvpn:
         if "Not connected" in stream:
             self.connection_status = False
         else:
-            self.current_server = Parser.parse_status(stream)
+            self.current_server = parser.parse_status(stream)
 
             self.connection_status = True
 
@@ -69,12 +57,12 @@ class Expressvpn:
 
     def ls(self):
         output = subprocess.check_output(["expressvpn", "ls"]).decode('utf-8')
-        self.servers = Parser.parse_ls(output)
+        self.servers = parser.parse_ls(output)
 
     def ls_recent(self):
         output = subprocess.check_output(
             ["expressvpn", "ls", "recent"]).decode('utf-8')
-        recent_servers = Parser.parse_ls_recent(output)
+        recent_servers = parser.parse_ls_recent(output)
         return recent_servers
 
     def refresh(self):

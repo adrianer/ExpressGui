@@ -2,7 +2,7 @@ import subprocess
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GObject
-from Expressvpn import Expressvpn
+import expressvpn
 from LocationPicker import LocationPicker
 from LocationPicker import Selector
 
@@ -57,7 +57,7 @@ class LocationButton(Gtk.Button):
 class Window(Gtk.Window):
 
     def __init__(self):
-        self.express = Expressvpn()
+        self.express = expressvpn.Expressvpn()
         self.selector = Selector(self.express)
         self.location_dialog = LocationPicker(self.express, self.selector,
                                               self.update)

@@ -1,4 +1,4 @@
-from Server import Server
+from expressvpn.server import Server
 
 def parse_preferences(stream):
     send_diagnostics = False
