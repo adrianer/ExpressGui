@@ -95,8 +95,3 @@ class Window(Gtk.Window):
     def main(self):
         Gtk.main()
 
-
-if __name__ == "__main__":
-
-    expressgui = Window()
-    expressgui.main()

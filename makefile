@@ -13,7 +13,7 @@ TARGET=expressgui
 exe:
 	mkdir -p $(BUILD_DIR)
 	cython --embed $(MAIN) -o $(BUILD_DIR)
-	make $(DEPS) -B
+	make -B $(DEPS)
 	make -C expressvpn
 	mkdir -p $(BUILD_DIR)/expressvpn
 	cp -v expressvpn/build/* $(BUILD_DIR)
@@ -26,6 +26,6 @@ compile:
 	$(CC) $(OPTS) -I /usr/include/python3.5m -o $(TARGET) $(FILES) $(EXPRESS) $(LIBS)
 	
 clean:
-	rm -R -f $(BUILD_DIR)
-	rm -f $(TARGET)
-	cd expressvpn && make clean
+	rm -v -R -f $(BUILD_DIR)
+	rm -v -f $(TARGET)
+	make -C expressvpn clean

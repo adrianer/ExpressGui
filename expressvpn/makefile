@@ -11,4 +11,4 @@ $(DEPS):
 	$(CYTHON) $@ -o $(BUILD_DIR)
 
 clean:
-	rm -R -f $(BUILD_DIR)
+	rm -v -R -f $(BUILD_DIR)
