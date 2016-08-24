@@ -1,26 +1,31 @@
 CYTHON=cython
 CC=gcc
-DEPS=location_picker.py
-BUILD=build
+OPTS=-Os
+DEPS=window.py location_picker.py
+MAIN=app.py
+BUILD_DIR=build
 FILES=$(wildcard build/*.c)
 EXPRESS=$(wildcard build/expressvpn/*.c)
+INCLUDE=/usrinclude/python3.5m
+LIBS=-lpython3.5m
+TARGET=expressgui
 
-cython:
-	mkdir -p build
-	cython --embed window.py -o build
+exe:
+	mkdir -p $(BUILD_DIR)
+	cython --embed $(MAIN) -o build
 	make $(DEPS) -B
 	make -C expressvpn
-	mkdir -p build/expressvpn
+	mkdir -p $(BUILD_DIR)/expressvpn
 	cp -v expressvpn/build/* build
 	$(MAKE) compile
 
 $(DEPS):
-	$(CYTHON) $@ -o build
+	$(CYTHON) $@ -o $(BUILD_DIR)
 
 compile:
-	$(CC) -Os -I /usr/include/python3.5m -o expressgui $(FILES) $(EXPRESS) -lpython3.5m -lpthread -lm -lutil -ldl
+	$(CC) $(OPTS) -I /usr/include/python3.5m -o $(TARGET) $(FILES) $(EXPRESS) $(LIBS)
 	
 clean:
-	rm -R -f build
-	rm -f expressgui
-	cd expressvpn && $(MAKE) clean
+	rm -R -f $(BUILD_DIR)
+	rm -f $(TARGET)
+	cd expressvpn && make clean

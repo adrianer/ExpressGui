@@ -66,7 +66,6 @@ def parse_server_list(output):
                     country = server.country
                 else:
                     location_list.append(server)
-
             else:
                 location_list.append(server)
                 country = server.country
