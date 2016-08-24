@@ -1,7 +1,7 @@
 CYTHON=cython
 CC=gcc
 OPTS=-Os
-DEPS=window.py location_picker.py menu.py prefences.py
+DEPS=window.py location_picker.py menu.py preferences.py
 MAIN=app.py
 BUILD_DIR=build
 FILES=$(wildcard build/*.c)
