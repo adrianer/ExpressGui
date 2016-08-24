@@ -6,6 +6,8 @@
 9. Add more logging
 10. Add expresvpn list recommended
 12. Add latency and maybe other statistics
+13. Add python build start
+14. Add install target
 
 
 Bugs
