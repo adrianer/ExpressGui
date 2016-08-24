@@ -5,7 +5,7 @@ from gi.repository import Gtk, GObject
 from expressvpn import Expressvpn
 from location_picker import LocationPicker
 from location_picker import Selector
-
+from menu import MenuButton
 
 class ConnectSwitch(Gtk.Switch):
 
@@ -62,6 +62,7 @@ class Window(Gtk.Window):
                                               self.update)
         self.create_main_window()
         self.create_widgets()
+        self.create_container()
         self.update()
         self.show_all()
 
@@ -75,7 +76,12 @@ class Window(Gtk.Window):
         self.switch = ConnectSwitch(self.express, self.selector)
         self.location_label = LocationLabel(self.express, self.selector)
         self.location_chooser_button = LocationButton(self.location_dialog)
-        box = Gtk.VBox(False, 0)
+        self.menu_button = MenuButton()
+
+    def create_container(self):
+        box = Gtk.Grid()
+        box.set_orientation(1)
+        box.add(self.menu_button)
         box.add(self.switch)
         box.add(self.location_label)
         box.add(self.location_chooser_button)
