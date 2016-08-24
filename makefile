@@ -12,11 +12,11 @@ TARGET=expressgui
 
 exe:
 	mkdir -p $(BUILD_DIR)
-	cython --embed $(MAIN) -o build
+	cython --embed $(MAIN) -o $(BUILD_DIR)
 	make $(DEPS) -B
 	make -C expressvpn
 	mkdir -p $(BUILD_DIR)/expressvpn
-	cp -v expressvpn/build/* build
+	cp -v expressvpn/build/* $(BUILD_DIR)
 	$(MAKE) compile
 
 $(DEPS):
