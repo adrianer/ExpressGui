@@ -5,6 +5,8 @@ ExpressGui will simply call the commands of the command line expressvpn program 
 
 Work in progress.
 
+Installation
+------------
 There are 2 build taget options.
 
 One that uses cython to compile to an exe and the other is just a normal python script. Python script is default
