@@ -17,7 +17,7 @@ exe:
 	make -C expressvpn
 	mkdir -p $(BUILD_DIR)/expressvpn
 	cp -v expressvpn/build/* $(BUILD_DIR)
-	$(MAKE) compile
+	make compile
 
 $(DEPS):
 	$(CYTHON) $@ -o $(BUILD_DIR)
