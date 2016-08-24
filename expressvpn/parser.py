@@ -3,14 +3,16 @@ from expressvpn.server import Server
 def parse_preferences(stream):
     send_diagnostics = False
     stream = stream.split()
-    if stream[1] is "false":
-        stream[1] = False
+    print(stream[1])
+    if stream[1] == "false":
+        auto_connect = False
     else:
-        stream[1] = True
-    auto_connect = stream[1]
+        auto_connect = True
     prefered_protocol = stream[3]
-    if stream[5] is 'true':
+    if stream[5] == 'true':
         send_diagnostics = True
+    else:
+        send_diagnostics = False
     return auto_connect, prefered_protocol, send_diagnostics
 
 

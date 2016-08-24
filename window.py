@@ -76,7 +76,7 @@ class Window(Gtk.Window):
         self.switch = ConnectSwitch(self.express, self.selector)
         self.location_label = LocationLabel(self.express, self.selector)
         self.location_chooser_button = LocationButton(self.location_dialog)
-        self.menu_button = MenuButton()
+        self.menu_button = MenuButton(self.express)
 
     def create_container(self):
         box = Gtk.Grid()

@@ -6,26 +6,32 @@ class Expressvpn:
     connection_status = False
     current_server = None
     servers = {}
-    protocols = ["udp", "auto", "tcp"]
     last_server = None
 
     def __init__(self):
         self.status()
         self.ls()
         self.last_server = self.ls_recent()[0]
-        self.preferences()
+        self.set_preferences()
 
-    def preferences(self):
+    def get_preferences(self):
         output = subprocess.check_output(
             ["expressvpn", "preferences"]).decode("utf-8")
         autoconnect, prefered_protocol, send_diagnostics = parser.parse_preferences(output)
-        self.preferences = Preferences(autoconnect, prefered_protocol, send_diagnostics)
+        return Preferences(autoconnect, prefered_protocol, send_diagnostics)
 
-    def autoconnect(self):
-        subprocess.call(["expressvpn", "autoconnect"])
+    def set_preferences(self):
+        self.preferences = self.get_preferences()
+
+    def autoconnect(self, state):
+        state = str(state)
+        print(state)
+        subprocess.call(["expressvpn", "autoconnect",state])
+        self.preferences.auto_connect = bool(state)
 
     def protocol(self, protocol="auto"):
         subprocess.call(["expressvpn", "protocol", protocol])
+        self.preferences.prefered_protocol = protocol
 
     def status(self):
         stream = subprocess.check_output(

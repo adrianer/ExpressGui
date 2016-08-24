@@ -3,6 +3,7 @@ class Preferences:
     auto_connect = False
     prefered_protocol = ""
     send_diagnostics = True
+    protocols = ["udp", "auto", "tcp"]
 
     def __init__(self, auto_connect, prefered_protocol, send_diagnostics):
         self.auto_connect = auto_connect
