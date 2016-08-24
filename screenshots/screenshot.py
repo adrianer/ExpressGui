@@ -1,6 +1,6 @@
 import sys
 sys.path.append("..")
-from Window import Window
+from window import Window
 import subprocess
 from threading import Thread
 from time import sleep
