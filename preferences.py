@@ -3,13 +3,15 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
-class PrefCheckButton(Gtk.CheckButton):
+class StatusCheckButton(Gtk.CheckButton):
+	"""Takes a status variable (string) and calls the function callback if status is not
+		equal to the widgets status""" 
 
-	def __init__(self, label, express, status_var, function):
-		self.express = express
+	def __init__(self, label, obj, status_var, function):
+		self.obj = obj
 		self.status_var = status_var
-		self.express_call = getattr(express, function)
-		self.express_status = getattr(express.preferences, self.status_var)
+		self.obj_call = function
+		self.obj_status = getattr(obj, self.status_var)
 		Gtk.CheckButton.__init__(self)
 		self.set_label(label)
 		self.connect('toggled', self.toggled)
@@ -17,19 +19,20 @@ class PrefCheckButton(Gtk.CheckButton):
 
 
 	def toggled(self, widget):
+		""" Calls the callback function and updates the objects status when the widget is toggled"""
 		status = self.get_active()
-		express_status = getattr(self.express.preferences, self.status_var)
-		if status == True and express_status == False:
-			self.express_call(True)
-		elif status == False and express_status == True:
-			self.express_call(False)
+		obj_status = getattr(self.obj, self.status_var)
+		if status == True and obj_status == False:
+			self.obj_call(True)
+		elif status == False and obj_status == True:
+			self.obj_call(False)
 
 	def update_widget(self):
 		""" Updates widgets status if it's not equal to status_var"""
 		widget_status = self.get_active()
-		if self.express_status == True and widget_status != True:
+		if self.obj_status == True and widget_status != True:
 			self.set_active(True)
-		elif self.express_status == False and widget_status != False:
+		elif self.obj_status == False and widget_status != False:
 			self.set_active(False)
 
 
@@ -68,8 +71,8 @@ class Preference(Gtk.Window):
 
 
 	def create_widgets(self):
-		self.diagnostics_check_button = PrefCheckButton("Diagnostics", self.express, "send_diagnostics", "temp")
-		self.autoconnect_check_button = PrefCheckButton("Autoconnect", self.express, "auto_connect", "autoconnect")
+		self.diagnostics_check_button = StatusCheckButton("Diagnostics", self.express.preferences, "send_diagnostics", self.express.temp)
+		self.autoconnect_check_button = StatusCheckButton("Autoconnect", self.express.preferences, "auto_connect", self.express.autoconnect)
 		self.protocol_combo_box = Protocol(self.express)
 
 
