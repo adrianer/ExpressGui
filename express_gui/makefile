@@ -1,14 +1,10 @@
 CYTHON=cython
-DEPS=window.py location_picker.py menu.py preferences.py
-BUILD_DIR=build
-FILES=$(wildcard build/*.c)
 
-exe:
-	mkdir -p $(BUILD_DIR)
-	make -B $(DEPS)
-
-$(DEPS):
-	$(CYTHON) $@ -o $(BUILD_DIR)
+cython:
+	mkdir -p express_gui
+	python setup.py build_ext --inplace
 	
 clean:
 	rm -v -R -f $(BUILD_DIR)
+	rm -v -f ./*.c
+	rm -v -f -R express_gui

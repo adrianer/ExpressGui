@@ -1,7 +1,7 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-from expressvpn import Expressvpn
+from expressvpn.expressvpn import Expressvpn
 from express_gui.location_picker import LocationPicker
 from express_gui.selector import Selector
 from express_gui.menu import MenuButton

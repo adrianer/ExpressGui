@@ -3,7 +3,7 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GObject
 from express_gui.preferences import Preference
-from expressvpn import Expressvpn
+from expressvpn.expressvpn import Expressvpn
 
 def Preferences(test, express):
     Preference(express)
