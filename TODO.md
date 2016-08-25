@@ -3,9 +3,6 @@
 3. Add more logging
 4. Add expresvpn list recommended
 5. Add latency and maybe other statistics
-6. Add python build target
-7. Add install target
-
 
 Bugs
 
