@@ -13,7 +13,7 @@ One that uses cython to compile to an exe and the other is just a normal python 
 
 Build as python script:
 ```shell
-	make
+make
 ```
 
 Build with cython:
