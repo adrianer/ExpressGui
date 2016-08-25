@@ -19,7 +19,7 @@ Build with cython:
 
 Installation
 ------------
-TODO
+	sudo make install
 
 Screenshots
 -----------
