@@ -4,11 +4,11 @@ BUILD_DIR=build
 FILES=$(wildcard *.c)
 
 exe:
-	mkdir -p $(BUILD_DIR)
-	make $(DEPS) -B
+    mkdir -p $(BUILD_DIR)
+    make $(DEPS) -B
 
 $(DEPS):
-	$(CYTHON) $@ -o $(BUILD_DIR)
+    $(CYTHON) $@ -o $(BUILD_DIR)
 
 clean:
-	rm -v -R -f $(BUILD_DIR)
+    rm -v -R -f $(BUILD_DIR)
