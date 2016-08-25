@@ -14,8 +14,8 @@ One that uses cython to compile to an exe and the other is just a normal python 
 Build as python script:
 	make
 
-Build as an exe:
-	make exe
+Build with cython:
+	make cython
 
 Installation
 ------------
