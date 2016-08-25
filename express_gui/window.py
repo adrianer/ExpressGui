@@ -1,7 +1,5 @@
 import gi
 gi.require_version('Gtk', '3.0')
-import sys
-print(sys.path)
 from gi.repository import Gtk
 from expressvpn import Expressvpn
 from express_gui.location_picker import LocationPicker
