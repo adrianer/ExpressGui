@@ -1,6 +1,6 @@
 import subprocess
 from expressvpn import parser
-from expressvpn.preferences import Preferences
+from expressvpn.preferencer import Preferencer
 
 class Expressvpn:
     connection_status = False
@@ -18,7 +18,7 @@ class Expressvpn:
         output = subprocess.check_output(
             ["expressvpn", "preferences"]).decode("utf-8")
         autoconnect, prefered_protocol, send_diagnostics = parser.parse_preferences(output)
-        return Preferences(autoconnect, prefered_protocol, send_diagnostics)
+        return Preferencer(autoconnect, prefered_protocol, send_diagnostics)
 
     def set_preferences(self):
         self.preferences = self.get_preferences()
@@ -78,7 +78,7 @@ class Expressvpn:
         if output == 0:
             return True
     def temp(self):
-        print(temp)
+        print("bacon")
 
 
 if __name__ == "__main__":

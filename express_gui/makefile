@@ -1,14 +1,14 @@
 CYTHON=cython
-DEPS=expressvpn.py preferencer.py server.py parser.py
+DEPS=window.py location_picker.py menu.py preferences.py
 BUILD_DIR=build
-FILES=$(wildcard *.c)
+FILES=$(wildcard build/*.c)
 
 exe:
 	mkdir -p $(BUILD_DIR)
-	make $(DEPS) -B
+	make -B $(DEPS)
 
 $(DEPS):
 	$(CYTHON) $@ -o $(BUILD_DIR)
-
+	
 clean:
 	rm -v -R -f $(BUILD_DIR)

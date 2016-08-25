@@ -1,5 +1,5 @@
 
-class Preferences:
+class Preferencer:
     auto_connect = False
     prefered_protocol = ""
     send_diagnostics = True

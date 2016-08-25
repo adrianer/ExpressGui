@@ -1,4 +1,4 @@
-from window import Window
+from express_gui import Window
 
 
 if __name__ == "__main__":

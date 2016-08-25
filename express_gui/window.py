@@ -1,11 +1,12 @@
-import subprocess
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, GObject
+import sys
+print(sys.path)
+from gi.repository import Gtk
 from expressvpn import Expressvpn
-from location_picker import LocationPicker
-from location_picker import Selector
-from menu import MenuButton
+from express_gui.location_picker import LocationPicker
+from express_gui.selector import Selector
+from express_gui.menu import MenuButton
 
 class ConnectSwitch(Gtk.Switch):
 
