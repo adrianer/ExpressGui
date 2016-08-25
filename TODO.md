@@ -1,19 +1,14 @@
 1. Error handling
-2. Add Preferences in gui
-4. Add support for menubar?
-7. Location dialog needs to be dialog class?
-8. File for main program
-9. Add more logging
-10. Add expresvpn list recommended
-12. Add latency and maybe other statistics
-13. Add python build start
-14. Add install target
+2. Location dialog needs to be dialog class?
+3. Add more logging
+4. Add expresvpn list recommended
+5. Add latency and maybe other statistics
+6. Add python build target
+7. Add install target
 
 
 Bugs
 
-When opened and not connected and the choose location button is pressed. The location combobox is blank.
+When Location picker is opened twice widgets are blank.
 
 Choose location dialog can be opened a billion times.
-
-Locationpicker selects wrong server sometimes?

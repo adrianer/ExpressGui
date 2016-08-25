@@ -59,7 +59,6 @@ class Protocol(Gtk.ComboBoxText):
 				self.set_active(item)
 
 
-
 class Preference(Gtk.Window):
 
 	def __init__(self, express):
