@@ -25,9 +25,11 @@ class Expressvpn:
 
     def autoconnect(self, state):
         state = str(state)
-        print(state)
         subprocess.call(["expressvpn", "autoconnect",state])
-        self.preferences.auto_connect = bool(state)
+        if state == "False":
+            self.preferences.auto_connect = False
+        else:
+            self.preferences.auto_connect = True
 
     def protocol(self, protocol="auto"):
         subprocess.call(["expressvpn", "protocol", protocol])
@@ -75,6 +77,8 @@ class Expressvpn:
         output = subprocess.call(["expressvpn", "refresh"])
         if output == 0:
             return True
+    def temp(self):
+        print(temp)
 
 
 if __name__ == "__main__":

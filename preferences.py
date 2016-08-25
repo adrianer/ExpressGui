@@ -3,57 +3,42 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
-class Diagnostics(Gtk.CheckButton):
+class PrefCheckButton(Gtk.CheckButton):
 
-	def __init__(self, express):
+	def __init__(self, label, express, status_var, function):
 		self.express = express
+		self.status_var = status_var
+		self.express_call = getattr(express, function)
+		self.express_status = getattr(express.preferences, self.status_var)
 		Gtk.CheckButton.__init__(self)
-		self.set_label("Send Diagnostics")
+		self.set_label(label)
 		self.connect('toggled', self.toggled)
-		self.update()
+		self.update_widget()
 
-	def toggled(self, widget):
-		pass
-
-	def update(self):
-		if self.express.preferences.send_diagnostics is True:
-			self.set_active(True)
-		else:
-			self.set_active(False)
-
-class AutoConnect(Gtk.CheckButton):
-
-	def __init__(self, express):
-		Gtk.CheckButton.__init__(self)
-		self.express = express
-		self.set_label("Autoconnect")
-		self.update()
-		self.connect('toggled', self.toggled)
 
 	def toggled(self, widget):
 		status = self.get_active()
-		print(status)
-		if status == True and self.express.preferences.auto_connect == False:
-			self.express.autoconnect(True)
-		elif status == False and self.express.preferences.auto_connect == True:
-			self.express.autoconnect(False)
-		self.update()
+		express_status = getattr(self.express.preferences, self.status_var)
+		if status == True and express_status == False:
+			self.express_call(True)
+		elif status == False and express_status == True:
+			self.express_call(False)
 
-	def update(self):
-		status = self.get_active()
-		pref_status = self.express.preferences.auto_connect
-		if status == False and pref_status == False:
-			self.set_active(False)
-		elif status == True and pref_status == True:
+	def update_widget(self):
+		""" Updates widgets status if it's not equal to status_var"""
+		widget_status = self.get_active()
+		if self.express_status == True and widget_status != True:
 			self.set_active(True)
-
+		elif self.express_status == False and widget_status != False:
+			self.set_active(False)
 
 
 class Protocol(Gtk.ComboBoxText):
 
 	def __init__(self, express):
-		Gtk.ComboBoxText.__init__(self)
 		self.express = express
+		Gtk.ComboBoxText.__init__(self)
+
 		self.preferences = express.preferences
 		self.connect("changed", self.protocol_changed)
 		self.update()
@@ -74,18 +59,18 @@ class Protocol(Gtk.ComboBoxText):
 
 class Preference(Gtk.Window):
 
-	def __init__(self, preferences):
+	def __init__(self, express):
+		self.express = express
 		Gtk.Window.__init__(self, title="Preferences")
-		self.preferences = preferences
 		self.create_widgets()
 		self.create_container()
 		self.show_all()
 
 
 	def create_widgets(self):
-		self.diagnostics_check_button = Diagnostics(self.preferences)
-		self.autoconnect_check_button = AutoConnect(self.preferences)
-		self.protocol_combo_box = Protocol(self.preferences)
+		self.diagnostics_check_button = PrefCheckButton("Diagnostics", self.express, "send_diagnostics", "temp")
+		self.autoconnect_check_button = PrefCheckButton("Autoconnect", self.express, "auto_connect", "autoconnect")
+		self.protocol_combo_box = Protocol(self.express)
 
 
 	def create_container(self):
