@@ -16,9 +16,9 @@ Build as python script:
 make
 
 Build with cython:
-
+```bash
 make cython
-
+```
 Installation
 ------------
 	sudo make install
