@@ -12,11 +12,12 @@ There are 2 build taget options.
 One that uses cython to compile to an exe and the other is just a normal python script. Python script is default
 
 Build as python script:
-
-make
+```shell
+	make
+```
 
 Build with cython:
-```sh
+```shell
 make cython
 ```
 Installation
