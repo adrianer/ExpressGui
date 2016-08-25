@@ -1,5 +1,5 @@
 import subprocess
-import parser
+from expressvpn import parser
 from expressvpn.preferencer import Preferencer
 
 class Expressvpn:
