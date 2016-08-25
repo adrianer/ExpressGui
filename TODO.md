@@ -9,6 +9,8 @@
 
 Bugs
 
+make python script work, relative imports in the packages/modules
+
 When Location picker is opened twice widgets are blank.
 
 Choose location dialog can be opened a billion times.
