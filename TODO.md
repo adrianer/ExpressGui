@@ -3,6 +3,7 @@
 3. Add more logging
 4. Add expresvpn list recommended
 5. Add latency and maybe other statistics
+6. Make tests
 
 Bugs
 
