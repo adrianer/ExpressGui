@@ -22,6 +22,9 @@ cython:
 	cython --embed expressgui.py
 	$(CC) $(OPTS) -I /usr/include/python3.5m expressgui.c $(LIBS) -o expressgui
 
+check:
+	autopep8 ./ --recursive --in-place --pep8-passes 2000 --verbose
+
 clean:
 	rm -f $(TARGET)
 	rm -v -R -f $(BUILD_DIR)

@@ -6,6 +6,7 @@ from express_gui.location_picker import LocationPicker
 from express_gui.selector import Selector
 from express_gui.menu import MenuButton
 
+
 class ConnectSwitch(Gtk.Switch):
 
     def __init__(self, express, selector):
@@ -29,7 +30,7 @@ class ConnectSwitch(Gtk.Switch):
             self.express.connect(self.selector.server_selected)
         elif status is False and self.express.connection_status is not False:
             self.express.disconnect()
-            
+
 
 class LocationLabel(Gtk.Label):
 
@@ -40,6 +41,7 @@ class LocationLabel(Gtk.Label):
 
     def update(self):
         self.set_text(self.selector.get_server_text())
+
 
 class LocationButton(Gtk.Button):
 
@@ -99,4 +101,3 @@ class Window(Gtk.Window):
 
     def main(self):
         Gtk.main()
-

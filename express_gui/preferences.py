@@ -2,9 +2,10 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
+
 class StatusCheckButton(Gtk.CheckButton):
     """Takes a status variable (string) and calls the function callback if status is not
-        equal to the widgets status""" 
+        equal to the widgets status"""
 
     def __init__(self, label, obj, status_var, function):
         self.obj = obj
@@ -15,7 +16,6 @@ class StatusCheckButton(Gtk.CheckButton):
         self.set_label(label)
         self.connect('toggled', self.toggled)
         self.update_widget()
-
 
     def toggled(self, widget):
         """ Calls the callback function and updates the objects status when the widget is toggled"""
@@ -67,12 +67,12 @@ class Preference(Gtk.Window):
         self.create_container()
         self.show_all()
 
-
     def create_widgets(self):
-        self.diagnostics_check_button = StatusCheckButton("Diagnostics", self.express.preferences, "send_diagnostics", self.express.temp)
-        self.autoconnect_check_button = StatusCheckButton("Autoconnect", self.express.preferences, "auto_connect", self.express.autoconnect)
+        self.diagnostics_check_button = StatusCheckButton(
+            "Diagnostics", self.express.preferences, "send_diagnostics", self.express.temp)
+        self.autoconnect_check_button = StatusCheckButton(
+            "Autoconnect", self.express.preferences, "auto_connect", self.express.autoconnect)
         self.protocol_combo_box = Protocol(self.express)
-
 
     def create_container(self):
         box = Gtk.Grid()

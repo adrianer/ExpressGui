@@ -18,4 +18,3 @@ mythread.start()
 sleep(1)
 subprocess.call(["gnome-screenshot", "-w", "-f", "locationchooser.png"])
 expressgui.emit("destroy")
-

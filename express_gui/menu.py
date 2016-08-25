@@ -5,19 +5,20 @@ from gi.repository import Gtk, GObject
 from express_gui.preferences import Preference
 from expressvpn.expressvpn import Expressvpn
 
+
 def Preferences(test, express):
     Preference(express)
 
 
 def About(test):
-    #TODO
+    # TODO
     pass
 
 
 class Menu(Gtk.Menu):
 
     def __init__(self, express):
-        menu_names = ["Preferences","About"]
+        menu_names = ["Preferences", "About"]
         Gtk.Menu.__init__(self)
         self.set_title("bacon")
         for name in menu_names:
@@ -25,6 +26,7 @@ class Menu(Gtk.Menu):
             self.append(menuitem)
             menuitem.show()
             menuitem.connect("activate", globals()[name], express)
+
 
 class MenuButton(Gtk.MenuButton):
 
@@ -34,4 +36,3 @@ class MenuButton(Gtk.MenuButton):
         menu.show()
         self.set_popup(menu)
         self.set_halign(2)
-
