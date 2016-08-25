@@ -16,7 +16,7 @@ Build as python script:
 make
 
 Build with cython:
-```shell
+```sh
 make cython
 ```
 Installation
