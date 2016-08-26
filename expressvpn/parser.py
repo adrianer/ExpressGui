@@ -2,6 +2,7 @@ from expressvpn.server import Server
 
 
 def parse_preferences(stream):
+    """ Returns preferences variables """
     send_diagnostics = False
     stream = stream.split()
     print(stream[1])
@@ -18,6 +19,7 @@ def parse_preferences(stream):
 
 
 def parse_status(stream):
+    """ Returns the a server object from expressvpn status output"""
     stream = stream.split(None, 2)
     stream = stream[2].strip('\n')
     country, location = parse_location_item(stream)
@@ -25,6 +27,7 @@ def parse_status(stream):
 
 
 def parse_ls_recent(output):
+    """ Returns a list of recent server objects """
     servers = []
     output = output.split('\n')
     output = output[2:-1]
@@ -39,18 +42,12 @@ def parse_ls_recent(output):
 
 
 def parse_ls(output):
-    """Returns a dictionary containing a list of countries and a list of locations
-    ["countries"] for a list of countries """
-    server_dict = {}
-    server_dict['countries'] = []
-    for country, location_list in parse_server_list(output):
-        server_dict['countries'].append(country)
-        server_dict[country] = location_list
-    return server_dict
+    """ Returns a dictionary containing list of objects seperated by country"""
+    return  {key: value for key, value in parse_server_list(output)}
 
 
 def parse_server_list(output):
-    """Returns the country and a list of locations of that country"""
+    """ Returns the country and a list of locations of that country"""
     location_list = []
     country = None
     output = output.split('\n')
@@ -98,6 +95,7 @@ def parse_server_item(stream):
 
 
 def parse_location_item(stream):
+    """ Parses location string in the format country - location """
     stream = [x.strip(' ') for x in stream.split('-')]
     if len(stream) is 1:
         country = stream[0]
