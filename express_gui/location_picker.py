@@ -7,6 +7,7 @@ from expressvpn.server import Server
 
 
 class Selector:
+    """ Holds the current selected server"""
     server_selected = Server
 
     def __init__(self, express):
@@ -21,6 +22,7 @@ class Selector:
 
 
 class CountryComboBox(Gtk.ComboBoxText):
+    """ Holds the list of countrys """
 
     def __init__(self, express, selector, location_box):
         Gtk.ComboBoxText.__init__(self)
@@ -30,19 +32,24 @@ class CountryComboBox(Gtk.ComboBoxText):
         self.location_box = location_box
         self.update()
 
+    def country_change(self, widget):
+        """ Changes the server selected in selector obj"""
+        country = self.get_active_text()
+        self.selector.server_selected = self.express.servers[country][0]
+        # ^^^This is need so that location_change knows which country. 
+        # There's probably a more elegant way to do it
+        self.location_box.update(country)
+
     def update(self):
+        """ Fills the combobox with the countries"""
         for item, country in enumerate(self.express.servers):
             self.append_text(country)
             if country == self.selector.server_selected.country:
                 self.set_active(item)
 
-    def country_change(self, widget):
-        country = self.get_active_text()
-        self.selector.server_selected = self.express.servers[country][0]
-        self.location_box.update(country)
-
 
 class LocationComboBox(Gtk.ComboBoxText):
+    """ Holds the list of locations """
 
     def __init__(self, express, selector):
         Gtk.ComboBoxText.__init__(self)
@@ -51,11 +58,13 @@ class LocationComboBox(Gtk.ComboBoxText):
         self.selector = selector
 
     def location_change(self, test):
+        """ Changes the server selected in selector obj"""
         status = self.get_active()
         self.selector.server_selected = self.express.servers[
             self.selector.server_selected.country][status]
 
     def update(self, country):
+        """ Fills the combobox with locations corresponding with the country """
         self.get_model().clear()
         for item, server in enumerate(self.express.servers[country]):
             self.append_text(server.location)
