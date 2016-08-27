@@ -36,7 +36,7 @@ class CountryComboBox(Gtk.ComboBoxText):
         """ Changes the server selected in selector obj"""
         country = self.get_active_text()
         self.selector.server_selected = self.express.servers[country][0]
-        # ^^^This is need so that location_change knows which country. 
+        # ^^^This is need so that location_change knows which country.
         # There's probably a more elegant way to do it
         self.location_box.update(country)
 
