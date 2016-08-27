@@ -28,16 +28,12 @@ class CountryComboBox(Gtk.ComboBoxText):
         self.express = express
         self.selector = selector
         self.location_box = location_box
-        self.get_countries()
-        self.update_selection()
+        self.update()
 
-    def get_countries(self):
+    def update(self):
         for item, country in enumerate(self.express.servers):
             self.append_text(country)
-
-    def update_selection(self):
-        for item in range(len(self.get_model())):
-            if self.get_model()[item][0] in self.selector.server_selected.country:
+            if country == self.selector.server_selected.country:
                 self.set_active(item)
 
     def country_change(self, widget):
