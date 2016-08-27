@@ -20,8 +20,8 @@ class StatusCheckButton(Gtk.CheckButton):
     def toggled(self, widget):
         """ Calls the callback function and updates the objects status when the widget is toggled"""
         status = self.get_active()
-        status_var = getattr(self.status_obj ,self.var_string)
-        if status == True and  status_var == False:
+        status_var = getattr(self.status_obj, self.var_string)
+        if status == True and status_var == False:
             self.callback(True)
         elif status == False and status_var == True:
             self.callback(False)
@@ -53,17 +53,16 @@ class StatusComboBox(Gtk.ComboBoxText):
     def changed(self, widget):
         """ If widget status and obj are not equal call the callback """
         active_item = self.get_active_text()
-        status_var = getattr(self.status_obj ,self.status)
+        status_var = getattr(self.status_obj, self.status)
         if active_item != status_var:
             self.callback(active_item)
             print("Protocol changed to " + active_item)
 
     def update(self):
         """ Populate combobox with the list """
-        status_var = getattr(self.status_obj ,self.status)
+        status_var = getattr(self.status_obj, self.status)
         for count, item in enumerate(self.item_list):
             self.append_text(item)
-            print(item)
             if item == status_var:
                 self.set_active(count)
 
@@ -78,9 +77,12 @@ class Preference(Gtk.Window):
         self.show_all()
 
     def create_widgets(self):
-        self.diagnostics_check_button = StatusCheckButton("Send Diagnostics", "send_diagnostics", self.express.preferences, self.express.temp)
-        self.autoconnect_check_button = StatusCheckButton("Autoconnect", "auto_connect", self.express.preferences, self.express.autoconnect)
-        self.protocol_combo_box = StatusComboBox("prefered_protocol", self.express.protocol, self.express.preferences.protocols, self.express.preferences)
+        self.diagnostics_check_button = StatusCheckButton(
+            "Send Diagnostics", "send_diagnostics", self.express.preferences, self.express.temp)
+        self.autoconnect_check_button = StatusCheckButton(
+            "Autoconnect", "auto_connect", self.express.preferences, self.express.autoconnect)
+        self.protocol_combo_box = StatusComboBox(
+            "prefered_protocol", self.express.protocol, self.express.preferences.protocols, self.express.preferences)
 
     def create_container(self):
         box = Gtk.Grid()

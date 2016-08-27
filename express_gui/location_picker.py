@@ -3,10 +3,11 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from threading import Thread
+from expressvpn.server import Server
 
 
 class Selector:
-    server_selected = None
+    server_selected = Server
 
     def __init__(self, express):
         self.express = express
@@ -29,7 +30,6 @@ class CountryComboBox(Gtk.ComboBoxText):
         self.location_box = location_box
         self.get_countries()
         self.update_selection()
-        self.location_box.update()
 
     def get_countries(self):
         for item, country in enumerate(self.express.servers):
@@ -41,8 +41,9 @@ class CountryComboBox(Gtk.ComboBoxText):
                 self.set_active(item)
 
     def country_change(self, widget):
-        self.selector.server_selected.country = self.get_active_text()
-        self.location_box.update()
+        country = self.get_active_text()
+        self.selector.server_selected = self.express.servers[country][0]
+        self.location_box.update(country)
 
 
 class LocationComboBox(Gtk.ComboBoxText):
@@ -54,17 +55,20 @@ class LocationComboBox(Gtk.ComboBoxText):
         self.selector = selector
 
     def location_change(self, test):
+        status = self.get_active()
         self.selector.server_selected = self.express.servers[
-            self.selector.server_selected.country][self.get_active()]
+            self.selector.server_selected.country][status]
 
-    def update(self):
+    def update(self, country):
         self.get_model().clear()
-        country = self.selector.server_selected.country
+        location_set = False
         for item, server in enumerate(self.express.servers[country]):
             self.append_text(server.location)
-            if server.location in self.selector.server_selected.location:
+            if server.location == self.selector.server_selected.location:
                 self.set_active(item)
-                self.location_change(self)
+                location_set = True
+        if location_set == False:
+            self.set_active(0)
 
 
 class ChangeServerButton(Gtk.Button):

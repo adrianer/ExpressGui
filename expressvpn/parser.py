@@ -5,7 +5,6 @@ def parse_preferences(stream):
     """ Returns preferences variables """
     send_diagnostics = False
     stream = stream.split()
-    print(stream[1])
     if stream[1] == "false":
         auto_connect = False
     else:
@@ -43,7 +42,7 @@ def parse_ls_recent(output):
 
 def parse_ls(output):
     """ Returns a dictionary containing list of objects seperated by country"""
-    return  {key: value for key, value in parse_server_list(output)}
+    return {key: value for (key, value) in parse_server_list(output)}
 
 
 def parse_server_list(output):
