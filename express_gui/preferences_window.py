@@ -67,7 +67,7 @@ class StatusComboBox(Gtk.ComboBoxText):
                 self.set_active(count)
 
 
-class Preference(Gtk.Window):
+class PreferenceWindow(Gtk.Window):
 
     def __init__(self, express):
         super().__init__(title="Preferences")

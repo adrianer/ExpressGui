@@ -2,7 +2,7 @@ import subprocess
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GObject
-from express_gui.preferences import Preference
+from express_gui.preferences_window import PreferenceWindow
 from expressvpn.expressvpn import Expressvpn
 
 
