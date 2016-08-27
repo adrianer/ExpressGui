@@ -9,7 +9,7 @@ Building
 --------
 There are 2 build taget options.
 
-One that uses cython to compile to an exe and the other is just a normal python script. Python script is default
+One that uses cython to compile to an exe and the other is just a normal python script. Cython isn't needed of course I just wanted to try cython out and i've left it here because why not. Python script is the default make target.
 
 Build as python script:
 ```shell
