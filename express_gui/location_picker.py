@@ -61,14 +61,9 @@ class LocationComboBox(Gtk.ComboBoxText):
 
     def update(self, country):
         self.get_model().clear()
-        location_set = False
         for item, server in enumerate(self.express.servers[country]):
             self.append_text(server.location)
-            if server.location == self.selector.server_selected.location:
-                self.set_active(item)
-                location_set = True
-        if location_set == False:
-            self.set_active(0)
+        self.set_active(0)
 
 
 class ChangeServerButton(Gtk.Button):
