@@ -1,6 +1,6 @@
 import sys
 sys.path.append("..")
-from window import Window
+from express_gui.window import Window
 import subprocess
 from threading import Thread
 from time import sleep
