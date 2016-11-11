@@ -4,6 +4,7 @@
 4. Add expresvpn list recommended
 5. Add latency and maybe other statistics
 6. Make tests
+7. Error handling for screenshot script
 
 Bugs
 

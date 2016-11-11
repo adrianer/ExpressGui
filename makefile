@@ -25,6 +25,9 @@ cython:
 check:
 	autopep8 ./ --recursive --in-place --pep8-passes 2000 --verbose
 
+screenshot:
+	python scripts/screenshot.py
+
 clean:
 	rm -f $(TARGET)
 	rm -v -R -f $(BUILD_DIR)
